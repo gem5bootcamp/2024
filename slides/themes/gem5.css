@@ -215,6 +215,16 @@ code {
     background-color: #ffffff;
 }
 
+section.tooMuchCode pre code {
+    font-size: 0.8rem;
+}
+
+section.tooMuchCode pre {
+    font-size: 0.8rem;
+    line-height: 1rem;
+
+}
+
 /*!
   Theme: Default
   Description: Original highlight.js style
