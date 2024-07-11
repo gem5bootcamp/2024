@@ -464,9 +464,194 @@ You will:
 
 ---
 
+## Debugging protocols
+
+### Run a parallel test
+
+```sh
+build/ALL/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+```
+
+Result is a failure!
+
+```termout
+build/ALL/mem/ruby/protocol/L1Cache_Transitions.cc:266: panic: Invalid transition
+system.caches.controllers0 time: 73 addr: 0x9100 event: DataDirNoAcks state: IS_D
+```
+
+### Run with protocol trace
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+```
+
+Start fixing the errors and fill in the `// Fill this in`!
+
+---
+
+## Fixing the errors: Missing transition
+
+- Missing IS_D transition in cache
+  - write the data to the cache
+  - deallocate the TBE
+  - mark that this is an "external load hit"
+  - pop the response queue
+
+```c++
+codeblock?
+```
+
+---
+
+## Fixing the errors: Missing action
+
+- Fill in the "write data to cache" action
+  - Get the data out of the message (how to get the message?)
+  - set the cache entry's data (how? where does `cache_entry` come from?)
+  - Make sure to have `assert(is_valid(cache_entry))`
+
+```c++
+codeblock?
+```
+
+Try again:
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+```
+
+---
+
+## Fixing the error: Why assert failure?
+
+- Why assert failure?
+  - Fill in `allocateCacheBlock`!
+  - Make sure to call `set_cache_entry`. Asserting there is an entry available and that `cache_entry` is invalid is helpful.
+
+```c++
+codeblock?
+```
+
+Try again:
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+```
+
+---
+
+## When debugging takes too long: RubyRandomTester
+
+**At some point it might be taking while to get to new errors, so...**
+
+Run the ruby random tester. This is a special "CPU" which exercises coherence corner cases.
+
+- Modify the `test_caches.py` the same way as `msi_caches.py`
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+```
+
+Notice you may want to change `checks_to_complete` and `num_cpus` in `test_caches.py`.
+You may also want to reduce the memory latency.
+
+---
+
+## Using the random tester
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+```
+
+- Wow! now it should be way faster to see the error!
+- Now, you need to handle this in the cache!
+  - If you get an invalidate...
+  - Send an ack, let the CPU know that this line was invalidated, deallocate the block, pop the queue
+- So, now, hmm, it looks like it works??? But here's still one more `// Fill this in`
+  - Some transitions are very rare
+  - Try varying the parameters of the tester (without `ProtocolTrace`!) to find a combination which triggers an error (100000 checks, 8 CPUs, 50ns memory...)
+- Now, you can fix the error!
+
+---
+
+## Fixing the error: Deadlock
+
+- Possible deadlock... hmm... This happens if *nothing* happens in the caches for a long time.
+  - What was the last thing that happened before the deadlock? Let's check what was *supposed* to happen
+  - Fill that in!
+
+```c++
+codeblock?
+```
+
+Try again:
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+```
+
+---
+
+## Fixing the error: What to do on a store
+
+- Fix the next error (what to do on a store??)
+  - Allocate a block, allocate a TBE, send a message, pop the queue
+  - Also make sure that all actions that you need
+  - When sending, you need to construct a new message. See `RequestMsg` in `MyMSI-msg.sm`
+
+```c++
+codeblock?
+```
+
+Try again:
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+```
+
+---
+
+## Final error: What to do when there is sharing?
+
+- Next error: What to do when there is sharing??
+  - get data from memory (yes, this is an unoptimized protocol..)
+  - remove the *requestor* from the sharers (just in case)
+  - send an invalidate to all other sharers
+  - set the owner
+  - and pop the queue
+
+```c++
+codeblock?
+```
+
+Try again: (note: no protocol trace this time since it is mostly working)
+
+```sh
+build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+```
+
+---
+
+## Now that it's working... look at the stats
+
+Re-run the simple pthread test and lets look at some stats!
+
+```sh
+build/ALL/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+```
+
+- How many forwarded messages did the L1 caches receive?
+- How many times times did a cache have to upgrade from S -> M?
+- What was the average miss latency for the L1?
+- What was the average miss latency *when another cache had the data*?
+
+FILL IN ANSWERS!
+
+---
+
 ## Ruby config scripts
 
-- Don’t follow gem5 style closely :(
+- Don't follow gem5 style closely :(
 - Require lots of boilerplate
 - Standard Library does a much better job
 
