@@ -24,13 +24,13 @@ title: gem5 Resources
 
 ---
 
-## How are resources versioned
+## Resource Versioning
 
 - Each unique resource is represented by its `id` and `resource_version`.
 
 - When an existing resource is updated the `id` remains the same but the `resource_version` is updated.
 
-- Each resource also has a field called `gem5_versions` which shows which releases of gem5 the resource is known to work on.
+- Each resource also has a field called `gem5_versions` which shows which releases of gem5 the resource is compatible with.
 
 <div style="text-align: center; margin-top: 12px;">
   <img src="./02-gem5-resouces/resource_website_version.png" alt="Versions tab from resources website" style="width: 80%; height: 300px;">
@@ -38,14 +38,14 @@ title: gem5 Resources
 
 ---
 
-## How to use resources in gem5 simulations
+## Using Resources in gem5 Simulations
 
 - To use the resources in gem5, we can use the `obtain_resource` function.
 - Lets to an example to use the `x86-hello64-static` binary in an example.
 
 ---
 
-## Workloads and suites
+## Workloads and Suites
 
 - Workload is a package of one or more resources that can have pre-defined parameters.
 - Lets see the `x86-ubuntu-24.04-boot-with-systemd` workload, you can see the [raw](https://resources.gem5.org/resources/x86-ubuntu-24.04-boot-with-systemd/raw?database=gem5-resources&version=1.0.0) tab to see how the resource is made.
@@ -60,7 +60,7 @@ title: gem5 Resources
 - Lets do an example that obtains a suite and then runs a workload from the suite.
 
 ---
-## Local resources
+## Local Resources
 
 - You can also use resources that you have created locally in gem5.
 - You can create a local JSON file that you can use as a data source by setting the
