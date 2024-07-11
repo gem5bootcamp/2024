@@ -11,15 +11,16 @@ title: gem5 Resources
 
 ---
 
-## What are resources? (Disks, kernels, binaries, etc.)
+## What are Resources? (Disks, kernels, binaries, etc.)
 
 - gem5 resources are prebuilt artifacts that can be used to run gem5 simulations.
 
-- gem5 resources are categorized by 13 different categories (binary, kernel, etc) and 6 different ISAs (ARM, x86, risc-v, etc).
+- Each gem5 resource falls into one of 13 categories (such as binary or kernel) and supports one of 6 ISAs (including ARM, x86, and RISC-V).
 
-- For more information about categories: [resources.gem5.org/category](https://resources.gem5.org/category)
+- For more information about categories, visit [resources.gem5.org/category](https://resources.gem5.org/category)
 
-- [gem5 resources website](https://resources.gem5.org) is an easy way to search for the resources you want to use.
+- The [gem5 resources website](https://resources.gem5.org) is an easy way to search for the resources you want to use.
+  - There are filters based on category, ISA, and gem5 version that help you narrow down the resources based on your requirements.
 
 ---
 
@@ -32,7 +33,7 @@ title: gem5 Resources
 - Each resource also has a field called `gem5_versions` which shows which releases of gem5 the resource is known to work on.
 
 <div style="text-align: center; margin-top: 12px;">
-  <img src="./02-gem5-resouces/resource_website_version.png" alt="Versions tab from resources website" style="width: 80%; height: 350px;">
+  <img src="./02-gem5-resouces/resource_website_version.png" alt="Versions tab from resources website" style="width: 80%; height: 300px;">
 </div>
 
 ---
