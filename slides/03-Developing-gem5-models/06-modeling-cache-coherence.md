@@ -198,7 +198,7 @@ Modify [`src/mem/ruby/protocol/MyMSI.slicc`](../../gem5/src/mem/ruby/protocol/My
 - Usually, you want to do this in the [`src/mem/ruby/protocol`](../../gem5/src/mem/ruby/protocol/) directory.
 
 ```text
-protocol "MSI";
+protocol "MyMSI";
 include "RubySlicc_interfaces.slicc";
 include "MSI-msg.sm";
 include "MSI-cache.sm";
@@ -253,11 +253,42 @@ Modify [`src/mem/ruby/protocol/MyMSI-dir.sm`](../../gem5/src/mem/ruby/protocol/M
 
 ---
 
-## Compile and run your new protocol
+## Compile your new protocol
+
+First, register the protocol with the `Kconfig` builder. Modify [`src/mem/ruby/protocol/Kconfig`](../../gem5/src/mem/ruby/protocol/Kconfig).
+
+```Kconfig
+config PROTOCOL
+    default "MyMSI" if RUBY_PROTOCOL_MYMSI
+```
+
+and
+
+```Kconfig
+cont_choice "Ruby protocol"
+    config RUBY_PROTOCOL_MYMSI
+        bool "MyMSI"
+```
+
+---
+
+## Run scons to compile
+
+Create a new build directory for the gem5 binary with your protocol. Let's start with the configuration from `build_opts/ALL` and modify it. You need to change the protocol, and you should enable the HTML output.
+
+```sh
+scons defconfig build/ALL_MyMSI build_opts/ALL
+scons menuconfig build/ALL_MyMSI
+# Ruby -> Enable -> Ruby protocol -> MyMSI
+```
 
 ```sh
 scons -j$(nproc) build/ALL/gem5.opt PROTOCOL=MyMSI
 ```
+
+---
+
+## Create a run script
 
 Modify [`configs/learning_gem5/part3/msi_caches.py`](../../gem5/configs/learning_gem5/part3/msi_caches.py) to use your new protocol.
 This file sets up the Ruby protocol for the MSI caches already in gem5's codebase. We'll use it for simplicity.
