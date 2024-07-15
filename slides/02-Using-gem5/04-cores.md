@@ -401,7 +401,7 @@ from gem5.isas import ISA
 
 ---
 
-## Let's Start with Atomic CPU
+## Let's start with Atomic CPU
 
 ```cpu_type``` in cores.py should already be set to Atomic
 
@@ -420,7 +420,7 @@ cpu_type = CPUTypes.ATOMIC
 > Make sure the out directory is set to **atomic-normal-cache**
 ---
 
-## Next, Try Timing CPU
+## Next, try Timing CPU
 
 Change ```cpu_type``` in cores.py to Timing
 
@@ -440,7 +440,7 @@ cpu_type = CPUTypes.TIMING
 
 ---
 
-## Now, try Changing the Cache Size
+## Now, try changing the Cache Size
 
 Go to this line of code.
 
@@ -575,9 +575,9 @@ timing-normal-cache/stats.txt:board.processor.cores0.core.numCycles        62838
 timing-small-cache/stats.txt:board.processor.cores0.core.numCycles         96494522
 ```
 
-Note that the number of cycles is the **same** for large cache and small cache for an Atomic CPU
+Note that the number of cycles is the **same** for a large cache and a small cache that use Atomic CPU
 
-This is because Atomic CPUs ignore latencies for memory accesses
+This is because Atomic CPU ignores latencies for memory accesses
 
 ---
 
