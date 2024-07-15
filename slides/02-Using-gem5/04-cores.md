@@ -374,13 +374,13 @@ src/cpu/o3/BaseO3CPU.py
 
 ### Start by opening the following file
 
-gem5bootcamp/2024/materials/using-gem5/04-cores/cores.py
+materials/using-gem5/04-cores/cores.py
 
 ---
 
 ## Let's configure a simple system with Atomic CPU
 
-gem5bootcamp/2024/materials/developing-gem5-models/04-cores/cores.py
+materials/developing-gem5-models/04-cores/cores.py
 ```python
 from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
@@ -575,7 +575,7 @@ timing-normal-cache/stats.txt:board.processor.cores0.core.numCycles        62838
 timing-small-cache/stats.txt:board.processor.cores0.core.numCycles         96494522
 ```
 
-Note that the number of cycles is the **same** for a large cache and a small cache that use Atomic CPU
+Note that for Atomic CPU, the number of cycles is the **same** for a large cache *and* a small cache
 
 This is because Atomic CPU ignores latencies for memory accesses
 
@@ -583,9 +583,9 @@ This is because Atomic CPU ignores latencies for memory accesses
 
 ## Extra Notes about gem5 Statistics
 
-When you specify the out-directory for the stats file (using the flag ```--outdir=<outdir-name>```), go to **\<outdir-name>/stats.txt** to look at the entire statistics file
+When you specify the out-directory for the stats file (when you use the flag ```--outdir=<outdir-name>```), go to **\<outdir-name>/stats.txt** to look at the entire statistics file
 
-For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-normal-cache/stats.txt**
+For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-small-cache/stats.txt**
 
 In general, if you don't specify the out-directory, it will be **gem5/m5out/stats.txt**
 
