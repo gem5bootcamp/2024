@@ -309,3 +309,30 @@ code.hljs {
 .hljs-strong {
     font-weight: bold;
 }
+
+/* Blue arrow bullet points */
+ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+ul li {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    padding-left: 30px; /* Increase padding to move text to the right */
+}
+
+ul li::before {
+    content: "";
+    position: absolute;
+    top: 5px; /* Adjust as needed */
+    left: 0; /* Adjust as needed */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid var(--gem5-gem5); /* Change to your desired color */
+    transform: rotate(90deg); /* Rotate to make it point right */
+}
+
