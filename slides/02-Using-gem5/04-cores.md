@@ -127,6 +127,7 @@ Models queuing delay and
 resource contention
 
 ![bg auto width:1250px Diagram to show different CPU Model Timings](04-cores-imgs/Simple-CPU.png)
+<!-- ![bg right Diagram to show different CPU Model Timings](04-cores-imgs/Simple-CPU-2.png) -->
 
 ---
 
@@ -366,10 +367,14 @@ src/cpu/o3/BaseO3CPU.py
 
 ## Material to use
 
-gem5bootcamp/2024/materials/using-gem5/04-cores/
+<!-- gem5bootcamp/2024/materials/using-gem5/04-cores/
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cores.py
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cores-complex.py
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;components/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;components/ -->
+
+### Start by opening the following file
+
+gem5bootcamp/2024/materials/using-gem5/04-cores/cores.py
 
 ---
 
@@ -392,12 +397,13 @@ from gem5.isas import ISA
 # and O3CPU using two different cache sizes
 
 ...
-
 ```
 
 ---
 
-## Change the CPU model to timing, and O3
+## Let's Start with Atomic CPU
+
+```cpu_type``` in cores.py should already be set to Atomic
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -406,3 +412,184 @@ cpu_type = CPUTypes.ATOMIC
 # cpu_type = CPUTypes.TIMING
 # cpu_type = CPUTypes.O3
 ```
+
+> Let's run it!
+> ```bash
+> gem5 --outdir=atomic-normal-cache ./materials/developing-gem5-models/04-cores/cores.py
+> ```
+> Make sure the out directory is set to **atomic-normal-cache**
+---
+
+## Next, Try Timing CPU
+
+Change ```cpu_type``` in cores.py to Timing
+
+```python
+# Comment out the cpu_types you don't want to use and
+# Uncomment the one you do want to use
+# cpu_type = CPUTypes.ATOMIC
+cpu_type = CPUTypes.TIMING
+# cpu_type = CPUTypes.O3
+```
+
+> Let's run it!
+> ```bash
+> gem5 --outdir=timing-normal-cache ./materials/developing-gem5-models/04-cores/cores.py
+>  ```
+> Make sure the out directory is set to **timing-normal-cache**
+
+---
+
+## Now, try Changing the Cache Size
+
+Go to this line of code.
+
+```python
+cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="32KiB", l1i_size="32KiB")
+```
+
+Change ```l1d_size``` and ```l1i_size``` to 1KiB.
+
+```python
+cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
+```
+
+> Let's run it!
+>```bash
+> gem5 --outdir=timing-small-cache ./materials/developing-gem5-models/04-cores/cores.py
+>```
+> Make sure the out directory is set to **timing-small-cache**
+
+---
+
+## Now let's try a Small Cache with Atomic CPU
+
+Set ```cpu_type``` in cores.py to Atomic
+
+```python
+# Comment out the cpu_types you don't want to use and
+# Uncomment the one you do want to use
+cpu_type = CPUTypes.ATOMIC
+# cpu_type = CPUTypes.TIMING
+# cpu_type = CPUTypes.O3
+```
+
+> Let's run it!
+> ```bash
+> gem5 --outdir=atomic-small-cache ./materials/developing-gem5-models/04-cores/cores.py
+> ```
+> Make sure the out directory is set to **atomic-small-cache**
+
+---
+
+## Outline
+
+- CPU models in gem5​
+  - AtomicSimpleCPU, TimingSimpleCPU, O3CPU, MinorCPU, KvmCPU​
+
+- Using the CPU models​
+  - Set-up a simple system with two cache sizes and three CPU models​
+
+- **Look at the gem5 generated statistics​**
+  - To understand differences among CPU models
+
+---
+
+<style scoped>
+  div.line{
+    display: flex;
+    padding: 250px 50px 0;
+    font-weight: normal;
+  }
+  span {
+    flex: 5;
+    text-align: center;
+    line-height: 75px;
+
+  }
+  span.left {
+    font-size: 5rem;
+    font-weight: bold;
+    background-size: 1000px 1000px;
+    background: linear-gradient(to right,rgb(67,124,205), rgb(69,214,202));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  span.right {
+    font-size: 1.9rem;
+  }
+  span.center {
+    flex: 0.25;
+
+  }
+  div.bar {
+    display: inline-block;
+    width: 0px;
+    border: 1px solid black;
+    height: 100px;
+    margin-top: -15px;
+  }
+</style>
+
+<div class="line"><span class="left">Statistics</span>
+
+<span class="center">
+
+<div class="bar"></div></span>
+<span class="right">Understanding gem5 statistics</span></div>
+
+---
+
+## Look at the Number of Operations
+
+Run the following command
+
+```bash
+grep -ri "simOps" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache
+```
+
+Here are the expected results
+
+```bash
+atomic-normal-cache/stats.txt:simOps                                       33954560
+atomic-small-cache/stats.txt:simOps                                        33954560
+timing-normal-cache/stats.txt:simOps                                       33954560
+timing-small-cache/stats.txt:simOps                                        33954560
+```
+
+---
+## Look at the Number of Execution Cycles
+
+Run the following command
+
+```bash
+grep -ri "numCycles" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache | grep "cores0"
+```
+
+Here are the expected results
+
+```bash
+atomic-normal-cache/stats.txt:board.processor.cores0.core.numCycles        38157549
+atomic-small-cache/stats.txt:board.processor.cores0.core.numCycles         38157549
+timing-normal-cache/stats.txt:board.processor.cores0.core.numCycles        62838389
+timing-small-cache/stats.txt:board.processor.cores0.core.numCycles         96494522
+```
+
+Note that the number of cycles is the **same** for large cache and small cache for an Atomic CPU
+
+This is because Atomic CPUs ignore latencies for memory accesses
+
+---
+
+## Extra Notes about gem5 Statistics
+
+When you specify the out-directory for the stats file (using the flag ```--outdir=<outdir-name>```), go to **\<outdir-name>/stats.txt** to look at the entire statistics file
+
+For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-normal-cache/stats.txt**
+
+In general, if you don't specify the out-directory, it will be **gem5/m5out/stats.txt**
+
+### Other statistics to look at
+
+- Host time (time taken by gem5 to run your simulation)
+  - *hostSeconds*
