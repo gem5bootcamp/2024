@@ -173,6 +173,13 @@ section.twoCol h3 {
 }
 
 /****************************************************/
+/* For centering images */
+section.center-image img {
+    display: block;
+    margin: auto;
+}
+
+/****************************************************/
 /* For code block */
 
 pre {
