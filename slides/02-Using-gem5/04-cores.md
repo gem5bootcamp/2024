@@ -168,15 +168,95 @@ resource contention
 
 ## O3CPU Model Parameters (very configurable)
 
-<!-- Update file location -->
 src/cpu/o3/BaseO3CPU.py
+
+```python
+    decodeToFetchDelay = Param.Cycles(1, "Decode to fetch delay")
+    renameToFetchDelay = Param.Cycles(1, "Rename to fetch delay")
+    iewToFetchDelay = Param.Cycles(1, "Issue/Execute/Writeback to fetch delay")
+    commitToFetchDelay = Param.Cycles(1, "Commit to fetch delay")
+    fetchWidth = Param.Unsigned(8, "Fetch width")
+    fetchBufferSize = Param.Unsigned(64, "Fetch buffer size in bytes")
+    fetchQueueSize = Param.Unsigned(
+        32, "Fetch queue size in micro-ops per-thread"
+    )
+```
 
 ---
 
 ## O3CPU Model Parameters (very configurable)
 
-<!-- Update file location -->
 src/cpu/o3/BaseO3CPU.py
+
+```python
+    renameToDecodeDelay = Param.Cycles(1, "Rename to decode delay")
+    iewToDecodeDelay = Param.Cycles(
+        1, "Issue/Execute/Writeback to decode delay"
+    )
+    commitToDecodeDelay = Param.Cycles(1, "Commit to decode delay")
+    fetchToDecodeDelay = Param.Cycles(1, "Fetch to decode delay")
+    decodeWidth = Param.Unsigned(8, "Decode width")
+```
+---
+
+## O3CPU Model Parameters (very configurable)
+
+src/cpu/o3/BaseO3CPU.py
+
+```python
+    LQEntries = Param.Unsigned(32, "Number of load queue entries")
+    SQEntries = Param.Unsigned(32, "Number of store queue entries")
+    LSQDepCheckShift = Param.Unsigned(
+        4, "Number of places to shift addr before check"
+    )
+    LSQCheckLoads = Param.Bool(
+        True,
+        "Should dependency violations be checked for "
+        "loads & stores or just stores",
+    )
+```
+---
+
+## O3CPU Model Parameters (very configurable)
+
+src/cpu/o3/BaseO3CPU.py
+
+```python
+    store_set_clear_period = Param.Unsigned(
+        250000,
+        "Number of load/store insts before the dep predictor "
+        "should be invalidated",
+    )
+    LFSTSize = Param.Unsigned(1024, "Last fetched store table size")
+    SSITSize = Param.Unsigned(1024, "Store set ID table size")
+
+    numRobs = Param.Unsigned(1, "Number of Reorder Buffers")
+
+    numPhysIntRegs = Param.Unsigned(
+        256, "Number of physical integer registers"
+    )
+```
+
+---
+
+## O3CPU Model Parameters (very configurable)
+
+src/cpu/o3/BaseO3CPU.py
+
+```python
+    numPhysFloatRegs = Param.Unsigned(
+        256, "Number of physical floating point registers"
+    )
+    numPhysVecRegs = Param.Unsigned(256, "Number of physical vector registers")
+    numPhysVecPredRegs = Param.Unsigned(
+        32, "Number of physical predicate registers"
+    )
+    numPhysMatRegs = Param.Unsigned(2, "Number of physical matrix registers")
+    # most ISAs don't use condition-code regs, so default is 0
+    numPhysCCRegs = Param.Unsigned(0, "Number of physical cc registers")
+    numIQEntries = Param.Unsigned(64, "Number of instruction queue entries")
+    numROBEntries = Param.Unsigned(192, "Number of reorder buffer entries")
+```
 
 ---
 
@@ -199,7 +279,6 @@ src/cpu/o3/BaseO3CPU.py
 - Very useful for functional tests and fast-forwarding
 
 ---
-
 
 <style scoped>
   h3{
@@ -242,6 +321,7 @@ src/cpu/o3/BaseO3CPU.py
 
 
 ---
+
 <style scoped>
   h2{
     margin-bottom: -40px;
@@ -286,9 +366,43 @@ src/cpu/o3/BaseO3CPU.py
 
 ## Material to use
 
-gem5-bootcamp-env/materials/using-gem5/05-cpu-models/
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu-models.py
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IntMM/
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;finished-material/
+gem5bootcamp/2024/materials/using-gem5/04-cores/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cores.py
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cores-complex.py
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;components/
 
 ---
+
+## Let's configure a simple system with Atomic CPU
+
+gem5bootcamp/2024/materials/developing-gem5-models/04-cores/cores.py
+```python
+from gem5.resources.resource import obtain_resource
+from gem5.simulate.simulator import Simulator
+from gem5.components.boards.simple_board import SimpleBoard
+from gem5.components.cachehierarchies.classic.private_l1_cache_hierarchy import PrivateL1CacheHierarchy
+from gem5.components.memory.single_channel import SingleChannelDDR3_1600
+from gem5.components.processors.simple_processor import SimpleProcessor
+from gem5.components.processors.cpu_types import CPUTypes
+from gem5.isas import ISA
+
+
+# A simple script to test with different CPU models
+# We will run a simple application (matrix-multiply) with AtomicSimpleCPU, TimingSimpleCPU,
+# and O3CPU using two different cache sizes
+
+...
+
+```
+
+---
+
+## Change the CPU model to timing, and O3
+
+```python
+# Comment out the cpu_types you don't want to use and
+# Uncomment the one you do want to use
+cpu_type = CPUTypes.ATOMIC
+# cpu_type = CPUTypes.TIMING
+# cpu_type = CPUTypes.O3
+```
