@@ -27,12 +27,6 @@ title: Modeling CPU cores in gem5
 
 ---
 
-<style scoped>
-  h2{
-    margin-bottom: 60px;
-  }
-</style>
-
 ## Summary of gem5 CPU Models
 
 ![width:1150px padding-top:500px](04-cores-imgs/Summary-of-gem5-models-2.png)
@@ -57,46 +51,18 @@ title: Modeling CPU cores in gem5
 
 <style scoped>
   div.line{
-    display: flex;
-    padding: 250px 50px 0;
-    font-weight: normal;
-  }
-  span {
-    flex: 5;
+    padding-top: 250px;
+    font-size: 4rem;
     text-align: center;
-    line-height: 75px;
-
-  }
-  span.left {
-    font-size: 5rem;
     font-weight: bold;
-    background-size: 1000px 1000px;
+    line-height: 75px;
     background: linear-gradient(to right,rgb(67,124,205), rgb(69,214,202));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  span.right {
-    font-size: 1.9rem;
-  }
-  span.center {
-    flex: 0.25;
-
-  }
-  div.bar {
-    display: inline-block;
-    width: 0px;
-    border: 1px solid black;
-    height: 100px;
-    margin-top: -15px;
-  }
 </style>
 
-<div class="line"><span class="left">SimpleCPU</span>
-
-<span class="center">
-
-<div class="bar"></div></span>
-<span class="right">Functional, In-Order CPU Models</span></div>
+<div class="line">Simple CPU</div>
 
 ---
 
@@ -385,7 +351,7 @@ from gem5.isas import ISA
 
 ## Let's start with Atomic CPU
 
-```cpu_type``` in cores.py should already be set to Atomic
+`cpu_type` in cores.py should already be set to Atomic
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -404,7 +370,7 @@ cpu_type = CPUTypes.ATOMIC
 
 ## Next, try Timing CPU
 
-Change ```cpu_type``` in cores.py to Timing
+Change `cpu_type` in cores.py to Timing
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -430,7 +396,7 @@ Go to this line of code.
 cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="32KiB", l1i_size="32KiB")
 ```
 
-Change ```l1d_size``` and ```l1i_size``` to 1KiB.
+Change `l1d_size` and `l1i_size` to 1KiB.
 
 ```python
 cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
@@ -446,7 +412,7 @@ cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
 
 ## Now let's try a Small Cache with Atomic CPU
 
-Set ```cpu_type``` in cores.py to Atomic
+Set `cpu_type` in cores.py to Atomic
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -482,46 +448,18 @@ cpu_type = CPUTypes.ATOMIC
 
 <style scoped>
   div.line{
-    display: flex;
-    padding: 250px 50px 0;
-    font-weight: normal;
-  }
-  span {
-    flex: 5;
+    padding-top: 250px;
+    font-size: 4rem;
     text-align: center;
-    line-height: 75px;
-
-  }
-  span.left {
-    font-size: 5rem;
     font-weight: bold;
-    background-size: 1000px 1000px;
+    line-height: 75px;
     background: linear-gradient(to right,rgb(67,124,205), rgb(69,214,202));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  span.right {
-    font-size: 1.9rem;
-  }
-  span.center {
-    flex: 0.25;
-
-  }
-  div.bar {
-    display: inline-block;
-    width: 0px;
-    border: 1px solid black;
-    height: 100px;
-    margin-top: -15px;
-  }
 </style>
 
-<div class="line"><span class="left">Statistics</span>
-
-<span class="center">
-
-<div class="bar"></div></span>
-<span class="right">Understanding gem5 statistics</span></div>
+<div class="line">Statistics</div>
 
 ---
 
@@ -568,7 +506,7 @@ This is because Atomic CPU ignores latencies for memory accesses
 
 ## Extra Notes about gem5 Statistics
 
-When you specify the out-directory for the stats file (when you use the flag ```--outdir=<outdir-name>```), go to **\<outdir-name>/stats.txt** to look at the entire statistics file
+When you specify the out-directory for the stats file (when you use the flag `--outdir=<outdir-name>`), go to **\<outdir-name>/stats.txt** to look at the entire statistics file
 
 For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-small-cache/stats.txt**
 
