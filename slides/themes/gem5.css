@@ -22,6 +22,7 @@ section {
     font-size: 1.6rem;
     font-family: sans-serif;
     line-height: 2rem;
+    color: black;
     padding: 70px;
     background-color: var(--gem5-background);
     background-image: url("../themes/gem5Long.png");
@@ -330,9 +331,31 @@ ul li::before {
     left: 0; /* Adjust as needed */
     width: 0;
     height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 20px solid var(--gem5-gem5); /* Change to your desired color */
+    border-left: 7px solid transparent; /* Smaller arrow */
+    border-right: 7px solid transparent; /* Smaller arrow */
+    border-bottom: 14px solid var(--gem5-gem5); /* Smaller and blue */
+    transform: rotate(90deg); /* Rotate to make it point right */
+}
+
+/* Styles for sub bullet points */
+ul li ul {
+    padding-left: 20px; /* Adjust as needed */
+}
+
+ul li ul li {
+    font-size: 1em; /* Smaller font size for sub-items */
+}
+
+ul li ul li::before {
+    content: "";
+    position: absolute;
+    top: 10px; /* Adjust for smaller arrow */
+    left: 10px; /* Adjust to align with text properly */
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent; /* Smaller arrow */
+    border-right: 5px solid transparent; /* Smaller arrow */
+    border-bottom: 10px solid black; /* Black and not solid (outline) */
     transform: rotate(90deg); /* Rotate to make it point right */
 }
 

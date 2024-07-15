@@ -10,6 +10,9 @@ title: example of the bullet point
 ### This is what it looks like
 
 - Bullet 1
+    - sub bullet
+        - sub sub bullet
+            - sub sub sub bullet
 - Bullet 2
 - Bullet 3
 
