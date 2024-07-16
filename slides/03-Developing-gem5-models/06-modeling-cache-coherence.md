@@ -200,9 +200,9 @@ Modify [`src/mem/ruby/protocol/MyMSI.slicc`](../../gem5/src/mem/ruby/protocol/My
 ```text
 protocol "MyMSI";
 include "RubySlicc_interfaces.slicc";
-include "MSI-msg.sm";
-include "MSI-cache.sm";
-include "MSI-dir.sm";
+include "MyMSI-msg.sm";
+include "MyMSI-cache.sm";
+include "MyMSI-dir.sm";
 ```
 
 > Remember the caveat that each protocol must be compiled separately.
@@ -278,12 +278,17 @@ Create a new build directory for the gem5 binary with your protocol. Let's start
 
 ```sh
 scons defconfig build/ALL_MyMSI build_opts/ALL
+```
+Modify [`ext/Kconfiglib/menuconfig.py`](../../gem5/ext/Kconfiglib/menuconfig.py) on line 707 in order to launch menuconfig.
+```locale.setlocale(locale.LC_ALL, "C") ```
+
+```sh
 scons menuconfig build/ALL_MyMSI
 # Ruby -> Enable -> Ruby protocol -> MyMSI
 ```
 
 ```sh
-scons -j$(nproc) build/ALL/gem5.opt PROTOCOL=MyMSI
+scons -j$(nproc) build/ALL_MyMSI/gem5.opt PROTOCOL=MyMSI
 ```
 
 ---
@@ -294,7 +299,7 @@ Modify [`configs/learning_gem5/part3/msi_caches.py`](../../gem5/configs/learning
 This file sets up the Ruby protocol for the MSI caches already in gem5's codebase. We'll use it for simplicity.
 
 ```sh
-build/ALL/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
 ```
 
 While we're waiting on the compilation, let's look at some of the details of the code.
