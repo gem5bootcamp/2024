@@ -3,6 +3,7 @@ marp: true
 paginate: true
 theme: gem5
 title: Developing SimObjects in gem5
+author: Mahyar Samani, M. Mysore
 ---
 
 <!-- _class: title -->
@@ -189,7 +190,7 @@ class HelloSimObject: public SimObject
 
 Things to note:
 
-- `BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__` is an include guard to prevent double includes and prevent cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the `gem5/src` directory with `_` being the separator.
+- `__BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__` is an include guard to prevent double includes and prevent cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the `gem5/src` directory with `_` being the separator.
 - `sim/sim_object.hh` holds the definition for class SimObject in C++.
 - As mentioned `params/HelloSimObject.hh` is auto-generated and defines a struct named `HelloSimObjectParams`.
 - Every SimObject should be defined inside the `namespace gem5`. Different categories of SimObjects may have their own specific namespace such as `gem5::memory`.
@@ -361,9 +362,39 @@ print(f"Exited simulation because: {exit_event.getCause()}.")
 ```
 
 ---
+<!-- _class: small-code -->
+
+### Detour: m5.instantiate: Calling Constrcutors and Connecting Ports
+
+Below is a snippet of code from the definition of m5.instantiate:
+
+```python
+# Create the C++ sim objects and connect ports
+    for obj in root.descendants():
+        obj.createCCObject()
+    for obj in root.descendants():
+        obj.connectPorts()
+```
+
+This means that well you call m5.instantiate first all the SimObjects are created (i.e. their C++ constructors are called) and then all the port connections are created. If you don't know what a `Port` is already, don't worry. We will get to that in the later slides. For now, think of ports as a facility for SimObjects to send each other data.
+
+---
+
+### Detour: m5.instantiate: Calling init, initState/loadState
+
+Here is another snippet of code further in the code of instantiate
+
+```python
+    # Do a second pass to finish initializing the sim objects
+    for obj in root.descendants():
+        obj.init()
+```
+
+In this step gem5 will call the `init` function from every SimObject. init is a virtual function defined by the SimObject class. Every SimObject based class can override this function. The purpose of the init function is to
+
+---
 
 ### Detour: A Glance at The SimObject Class
 
-Take a look at `src/sim/sim_object.hh`.
 
 ---
