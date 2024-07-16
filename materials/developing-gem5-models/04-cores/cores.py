@@ -26,18 +26,17 @@ from gem5.isas import ISA
 # In general: Run with gem5 [optional: --outdir=<cpu_type>-<cache_size>-cache] ./materials/developing-gem5-models/04-cores/cores.py
 
 # Start with 32KiB and change to 1KiB during step 3
-
 cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
 
 memory = SingleChannelDDR3_1600("1GiB")
 
-# Uncomment one of the following lines
-
+# By default, use Atomic CPU
 cpu_type = CPUTypes.ATOMIC
+
+# Uncomment for steps 2 and 3
 # cpu_type = CPUTypes.TIMING
 
 # Uncomment and look at this cpu_type on your own time
-
 # cpu_type = CPUTypes.O3
 
 processor = SimpleProcessor(cpu_type=cpu_type, isa=ISA.RISCV, num_cores=8)

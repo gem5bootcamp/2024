@@ -36,13 +36,13 @@ from m5.objects.BranchPredictor import (
 )
 
 
-# HW3O3CPUCore extends RiscvO3CPU. RiscvO3CPU is one of gem5's internal models
+# O3CPUCore extends RiscvO3CPU. RiscvO3CPU is one of gem5's internal models
 # the implements an out of order pipeline. Please refer to
 #   https://www.gem5.org/documentation/general_docs/cpu_models/O3CPU
 # to learn more about O3CPU.
 
 
-class HW3O3CPUCore(RiscvO3CPU):
+class O3CPUCore(RiscvO3CPU):
     def __init__(self, width, rob_size, num_int_regs, num_fp_regs):
         """
         :param width: sets the width of fetch, decode, raname, issue, wb, and
@@ -71,13 +71,13 @@ class HW3O3CPUCore(RiscvO3CPU):
         self.SQEntries = 128
 
 
-# Along with BaseCPUCore, HW3CPUStdCore wraps HW3CPUCore to a core compatible
+# Along with BaseCPUCore, CPUStdCore wraps CPUCore to a core compatible
 # with gem5's standard library. Please refer to
 #   gem5/src/python/gem5/components/processors/base_cpu_core.py
 # to learn more about BaseCPUCore.
 
 
-class HW3O3CPUStdCore(BaseCPUCore):
+class O3CPUStdCore(BaseCPUCore):
     def __init__(self, width, rob_size, num_int_regs, num_fp_regs):
         """
         :param width: sets the width of fetch, decode, raname, issue, wb, and
@@ -87,17 +87,17 @@ class HW3O3CPUStdCore(BaseCPUCore):
         :param num_int_regs: determines the size of the vector/floating point
         register file.
         """
-        core = HW3O3CPUCore(width, rob_size, num_int_regs, num_fp_regs)
+        core = O3CPUCore(width, rob_size, num_int_regs, num_fp_regs)
         super().__init__(core, ISA.RISCV)
 
 
-# HW3O3CPU along with BaseCPUProcessor wraps HW3CPUCore to a processor
+# O3CPU along with BaseCPUProcessor wraps CPUCore to a processor
 # compatible with gem5's standard library. Please refer to
 #   gem5/src/python/gem5/components/processors/base_cpu_processor.py
 # to learn more about BaseCPUProcessor.
 
 
-class HW3O3CPU(BaseCPUProcessor):
+class O3CPU(BaseCPUProcessor):
     def __init__(self, width, rob_size, num_int_regs, num_fp_regs):
         """
         :param width: sets the width of fetch, decode, raname, issue, wb, and
@@ -107,7 +107,7 @@ class HW3O3CPU(BaseCPUProcessor):
         :param num_int_regs: determines the size of the vector/floating point
         register file.
         """
-        cores = [HW3O3CPUStdCore(width, rob_size, num_int_regs, num_fp_regs)]
+        cores = [O3CPUStdCore(width, rob_size, num_int_regs, num_fp_regs)]
         super().__init__(cores)
         self._width = width
         self._rob_size = rob_size
@@ -129,20 +129,24 @@ class HW3O3CPU(BaseCPUProcessor):
         )
         return score
 
-class big(HW3O3CPU):
+# UPDATE FOR STEP 1
+# Configure with width=10, rob_size=100, num_int_regs=50, num_fp_regs=50
+class big(O3CPU):
     def __init__(self):
         super().__init__(
-            width=10,
-            rob_size=100,
-            num_int_regs=50,
-            num_fp_regs=50,
+            width=0,
+            rob_size=0,
+            num_int_regs=0,
+            num_fp_regs=0,
         )
 
-class LITTLE(HW3O3CPU):
+# UPDATE FOR STEP 1
+# Configure with width=2, rob_size=25, num_int_regs=35, num_fp_regs=35
+class LITTLE(O3CPU):
     def __init__(self):
         super().__init__(
-            width=2,
-            rob_size=25,
-            num_int_regs=34,
-            num_fp_regs=34,
+            width=0,
+            rob_size=0,
+            num_int_regs=0,
+            num_fp_regs=0,
         )
