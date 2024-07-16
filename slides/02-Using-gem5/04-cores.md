@@ -144,15 +144,7 @@ resource contention
     commitToDecodeDelay = Param.Cycles(1, "Commit to decode delay")
     fetchToDecodeDelay = Param.Cycles(1, "Fetch to decode delay")
     decodeWidth = Param.Unsigned(8, "Decode width")
-```
----
 
-## O3CPU Model Parameters (very configurable)
-
-[src/cpu/o3/BaseO3CPU.py](../../gem5/src/cpu/o3/BaseO3CPU.py)
-
-```python
-    LQEntries = Param.Unsigned(32, "Number of load queue entries")
     SQEntries = Param.Unsigned(32, "Number of store queue entries")
     LSQDepCheckShift = Param.Unsigned(
         4, "Number of places to shift addr before check"
@@ -161,8 +153,8 @@ resource contention
         True,
         "Should dependency violations be checked for "
         "loads & stores or just stores",
-    )
 ```
+
 ---
 
 ## O3CPU Model Parameters (very configurable)
@@ -227,18 +219,6 @@ resource contention
 - Very useful for functional tests and fast-forwarding
 
 ---
-<!--
-<style scoped>
-  h3{
-    font-size: 1.8rem;
-    margin-bottom: 0;
-    line-height: 0;
-  }
-  h2{
-    margin-bottom: 0;
-  }
-</style>
--->
 
 ## Summary of gem5 CPU Models
 
@@ -260,22 +240,13 @@ resource contention
 - Timing
 - Caches, BP
 
-<!-- ![bg width:1200px Diagram to show different CPU Models](04-cores-imgs/Summary-of-gem5-models-bg-2.png) --> -->
-
 ![bg width:1200px Diagram to show different CPU Models](04-cores-imgs/Summary-of-gem5-models-bg-2.png)
-
 
 ---
 
-<style scoped>
-  h2{
-    margin-bottom: -40px;
-  }
-</style>
 ## Interaction of CPU model with other parts of gem5
 
 ![bg auto width:1050px Diagram to show CPU Model Interactions](04-cores-imgs/CPU-interaction-model.png)
-
 
 ---
 
@@ -314,14 +285,16 @@ resource contention
 
 ## Material to use
 
-<!-- gem5bootcamp/2024/materials/using-gem5/04-cores/
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cores.py
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cores-complex.py
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;components/ -->
-
 ### Start by opening the following file
 
 > [materials/developing-gem5-models/04-cores/cores.py](../../materials/developing-gem5-models/04-cores/cores.py)
+
+### Steps
+
+1. Configure a simple system with Atomic CPU
+2. Configure the same system with Timing CPU
+3. Reduce the cache size
+4. Change the CPU type back to Atomic
 
 ---
 
@@ -362,9 +335,11 @@ cpu_type = CPUTypes.ATOMIC
 ```
 
 > Let's run it!
+>
 > ```sh
 > gem5 --outdir=atomic-normal-cache ./materials/developing-gem5-models/04-cores/cores.py
 > ```
+>
 > Make sure the out directory is set to **atomic-normal-cache**
 ---
 
@@ -381,9 +356,11 @@ cpu_type = CPUTypes.TIMING
 ```
 
 > Let's run it!
+>
 > ```sh
 > gem5 --outdir=timing-normal-cache ./materials/developing-gem5-models/04-cores/cores.py
 >  ```
+>
 > Make sure the out directory is set to **timing-normal-cache**
 
 ---
@@ -403,9 +380,11 @@ cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
 ```
 
 > Let's run it!
+>
 >```sh
 > gem5 --outdir=timing-small-cache ./materials/developing-gem5-models/04-cores/cores.py
 >```
+>
 > Make sure the out directory is set to **timing-small-cache**
 
 ---
@@ -423,9 +402,11 @@ cpu_type = CPUTypes.ATOMIC
 ```
 
 > Let's run it!
+>
 > ```sh
 > gem5 --outdir=atomic-small-cache ./materials/developing-gem5-models/04-cores/cores.py
 > ```
+>
 > Make sure the out directory is set to **atomic-small-cache**
 
 ---
@@ -500,7 +481,7 @@ timing-small-cache/stats.txt:board.processor.cores0.core.numCycles         96494
 
 Note that for Atomic CPU, the number of cycles is the **same** for a large cache *and* a small cache
 
-This is because Atomic CPU ignores latencies for memory accesses
+This is because Atomic CPU ignores memory access latency
 
 ---
 
@@ -515,4 +496,4 @@ In general, if you don't specify the out-directory, it will be **gem5/m5out/stat
 ### Other statistics to look at
 
 - Host time (time taken by gem5 to run your simulation)
-  - *hostSeconds*
+  - _hostSeconds_
