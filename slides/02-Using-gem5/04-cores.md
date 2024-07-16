@@ -100,6 +100,8 @@ resource contention
 - **_Timing_** memory accesses _execute-in-execute_ semantics
 - Time buffers between stages
 
+![width:1000px O3CPU](04-cores-imgs/O3CPU.svg)
+
 ---
 
 ## The O3CPU Model has many parameters
