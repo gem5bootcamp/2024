@@ -16,10 +16,10 @@ from components.processors import big, LITTLE
 # Steps
     # 1. Go to components/processors.py and update class big(O3CPU) and class LITTLE(O3CPU)
     # 2. In this file, leave processor=big()
-        # Run with # gem5 --outdir=big ./materials/developing-gem5-models/04-cores/cores-complex.py
+        # Run with # gem5 --outdir=big-proc ./materials/developing-gem5-models/04-cores/cores-complex.py
     # 3. In this file, comment out processor=big() and uncomment processor=LITTLE()
-        # Run with # gem5 --outdir=LITTLE ./materials/developing-gem5-models/04-cores/cores-complex.py
-    # Compare the stats.txt file in /big/ /LITTLE/
+        # Run with # gem5 --outdir=LITTLE-proc ./materials/developing-gem5-models/04-cores/cores-complex.py
+    # 4. Compare the stats.txt file in /big/ /LITTLE/
 
 # In general run with the following command
     # gem5 [optional: --outdir=<processor>] ./materials/developing-gem5-models/04-cores/cores-complex.py
@@ -44,10 +44,10 @@ memory = ChanneledMemory(
 )
 
 # Use big processor by default
-processor = big()
+# processor = big()
 
 # Uncomment for step 3
-# processor = LITTLE()
+processor = LITTLE()
 
 board = SimpleBoard(
     clk_freq="2GHz",

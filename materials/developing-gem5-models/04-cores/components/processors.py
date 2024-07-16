@@ -130,7 +130,7 @@ class O3CPU(BaseCPUProcessor):
         return score
 
 # UPDATE FOR STEP 1
-# Configure with width=10, rob_size=100, num_int_regs=50, num_fp_regs=50
+# Configure with width=10, rob_size=40, num_int_regs=50, num_fp_regs=50
 class big(O3CPU):
     def __init__(self):
         super().__init__(
@@ -141,7 +141,7 @@ class big(O3CPU):
         )
 
 # UPDATE FOR STEP 1
-# Configure with width=2, rob_size=25, num_int_regs=35, num_fp_regs=35
+# Configure with width=2, rob_size=30, num_int_regs=40, num_fp_regs=40
 class LITTLE(O3CPU):
     def __init__(self):
         super().__init__(
