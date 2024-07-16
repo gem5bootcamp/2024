@@ -13,28 +13,6 @@ title: Modeling CPU cores in gem5
 
 ## Outline
 
-- CPU models in gem5​
-
-  - AtomicSimpleCPU, TimingSimpleCPU, O3CPU, MinorCPU, KvmCPU​
-
-- Using the CPU models​
-
-  - Set-up a simple system with two cache sizes and three CPU models​
-
-- Look at the gem5 generated statistics​
-
-  - To understand differences among CPU models
-
----
-
-## Summary of gem5 CPU Models
-
-![width:1150px padding-top:500px](04-cores-imgs/Summary-of-gem5-models-2.png)
-
----
-
-## Outline
-
 > - **CPU models in gem5​**
 >
 >   - AtomicSimpleCPU, TimingSimpleCPU, O3CPU, MinorCPU, KvmCPU​
@@ -46,6 +24,16 @@ title: Modeling CPU cores in gem5
 - Look at the gem5 generated statistics​
 
   - To understand differences among CPU models
+
+- Create a custom processor
+
+  - Change parameters of a processor based on O3CPU
+
+---
+
+## Summary of gem5 CPU Models
+
+![width:1150px padding-top:500px](04-cores-imgs/Summary-of-gem5-models-2.png)
 
 ---
 
@@ -114,88 +102,45 @@ resource contention
 
 ---
 
-## O3CPU Model Parameters (very configurable)
+## The O3CPU Model has many parameters
 
 [src/cpu/o3/BaseO3CPU.py](../../gem5/src/cpu/o3/BaseO3CPU.py)
 
 ```python
-    decodeToFetchDelay = Param.Cycles(1, "Decode to fetch delay")
-    renameToFetchDelay = Param.Cycles(1, "Rename to fetch delay")
-    iewToFetchDelay = Param.Cycles(1, "Issue/Execute/Writeback to fetch delay")
-    commitToFetchDelay = Param.Cycles(1, "Commit to fetch delay")
-    fetchWidth = Param.Unsigned(8, "Fetch width")
-    fetchBufferSize = Param.Unsigned(64, "Fetch buffer size in bytes")
-    fetchQueueSize = Param.Unsigned(
-        32, "Fetch queue size in micro-ops per-thread"
-    )
+...
+decodeToFetchDelay = Param.Cycles(1, "Decode to fetch delay")
+renameToFetchDelay = Param.Cycles(1, "Rename to fetch delay")
+iewToFetchDelay = Param.Cycles(1, "Issue/Execute/Writeback to fetch delay")
+commitToFetchDelay = Param.Cycles(1, "Commit to fetch delay")
+fetchWidth = Param.Unsigned(8, "Fetch width")
+fetchBufferSize = Param.Unsigned(64, "Fetch buffer size in bytes")
+fetchQueueSize = Param.Unsigned(
+    32, "Fetch queue size in micro-ops per-thread"
+)
+renameToDecodeDelay = Param.Cycles(1, "Rename to decode delay")
+...
 ```
 
 ---
 
-## O3CPU Model Parameters (very configurable)
+## The O3CPU Model Parameters are easy to configure
 
 [src/cpu/o3/BaseO3CPU.py](../../gem5/src/cpu/o3/BaseO3CPU.py)
 
-```python
-    renameToDecodeDelay = Param.Cycles(1, "Rename to decode delay")
-    iewToDecodeDelay = Param.Cycles(
-        1, "Issue/Execute/Writeback to decode delay"
-    )
-    commitToDecodeDelay = Param.Cycles(1, "Commit to decode delay")
-    fetchToDecodeDelay = Param.Cycles(1, "Fetch to decode delay")
-    decodeWidth = Param.Unsigned(8, "Decode width")
-
-    SQEntries = Param.Unsigned(32, "Number of store queue entries")
-    LSQDepCheckShift = Param.Unsigned(
-        4, "Number of places to shift addr before check"
-    )
-    LSQCheckLoads = Param.Bool(
-        True,
-        "Should dependency violations be checked for "
-        "loads & stores or just stores",
-```
-
----
-
-## O3CPU Model Parameters (very configurable)
-
-[src/cpu/o3/BaseO3CPU.py](../../gem5/src/cpu/o3/BaseO3CPU.py)
+In the following code, there are 256 physical integer registers
 
 ```python
-    store_set_clear_period = Param.Unsigned(
-        250000,
-        "Number of load/store insts before the dep predictor "
-        "should be invalidated",
-    )
-    LFSTSize = Param.Unsigned(1024, "Last fetched store table size")
-    SSITSize = Param.Unsigned(1024, "Store set ID table size")
-
-    numRobs = Param.Unsigned(1, "Number of Reorder Buffers")
-
     numPhysIntRegs = Param.Unsigned(
         256, "Number of physical integer registers"
     )
 ```
 
----
-
-## O3CPU Model Parameters (very configurable)
-
-[src/cpu/o3/BaseO3CPU.py](../../gem5/src/cpu/o3/BaseO3CPU.py)
+We can update the code so that there are only 32 physical integer registers
 
 ```python
-    numPhysFloatRegs = Param.Unsigned(
-        256, "Number of physical floating point registers"
+    numPhysIntRegs = Param.Unsigned(
+        32, "Number of physical integer registers"
     )
-    numPhysVecRegs = Param.Unsigned(256, "Number of physical vector registers")
-    numPhysVecPredRegs = Param.Unsigned(
-        32, "Number of physical predicate registers"
-    )
-    numPhysMatRegs = Param.Unsigned(2, "Number of physical matrix registers")
-    # most ISAs don't use condition-code regs, so default is 0
-    numPhysCCRegs = Param.Unsigned(0, "Number of physical cc registers")
-    numIQEntries = Param.Unsigned(64, "Number of instruction queue entries")
-    numROBEntries = Param.Unsigned(192, "Number of reorder buffer entries")
 ```
 
 ---
@@ -264,6 +209,10 @@ resource contention
 
   - To understand differences among CPU models
 
+- Create a custom processor
+
+  - Change parameters of a processor based on O3CPU
+
 ---
 
 <style scoped>
@@ -295,6 +244,8 @@ resource contention
 2. Configure the same system with Timing CPU
 3. Reduce the cache size
 4. Change the CPU type back to Atomic
+
+We will be running a program (workload) called **matrix-multiply** on our board
 
 ---
 
@@ -425,6 +376,10 @@ cpu_type = CPUTypes.ATOMIC
 >
 >   - To understand differences among CPU models
 
+- Create a custom processor
+
+  - Change parameters of a processor based on O3CPU
+
 ---
 
 <style scoped>
@@ -470,7 +425,7 @@ Run the following command
 grep -ri "numCycles" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache | grep "cores0"
 ```
 
-Here are the expected results
+Here are the expected results (Note: Some text is removed for readability)
 
 ```sh
 atomic-normal-cache/stats.txt:board.processor.cores0.core.numCycles        38157549
@@ -491,9 +446,195 @@ When you specify the out-directory for the stats file (when you use the flag `--
 
 For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-small-cache/stats.txt**
 
-In general, if you don't specify the out-directory, it will be **gem5/m5out/stats.txt**
+In general, if you don't specify the out-directory, it will be **m5out/stats.txt**
 
 ### Other statistics to look at
 
 - Host time (time taken by gem5 to run your simulation)
   - _hostSeconds_
+
+---
+
+## Outline
+
+- CPU models in gem5​
+
+  - AtomicSimpleCPU, TimingSimpleCPU, O3CPU, MinorCPU, KvmCPU​
+
+- Using the CPU models​
+
+  - Set-up a simple system with two cache sizes and three CPU models​
+
+- Look at the gem5 generated statistics​
+
+  - To understand differences among CPU models
+
+> - **Create a custom processor**
+>
+>   - Change parameters of a processor based on O3CPU
+
+---
+
+<style scoped>
+  div.line{
+    padding-top: 250px;
+    font-size: 4rem;
+    text-align: center;
+    font-weight: bold;
+    line-height: 75px;
+    background: linear-gradient(to right,rgb(67,124,205), rgb(69,214,202));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+</style>
+
+<div class="line">Let's configure a custom processor!</div>
+
+---
+
+## Material to use
+
+### Start by opening the following files
+
+> [materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
+> [materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
+
+### Steps
+
+1. Update class big(O3CPU) and class LITTLE(O3CPU)
+2. Run with big processor
+3. Run with LITTLE processor
+4. Compare statistics
+
+We will be running the same workload (**matrix-multiply**) on our board
+
+---
+
+<!-- _class: twoCol -->
+
+## Configuring two processors
+
+Open the following file:
+[materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
+
+In class big, set
+
+- width=**10**
+
+- rob_size=**40**
+
+- num_int_regs=**50**
+
+- num_fp_regs=**50**
+
+
+###
+
+```python
+class big(O3CPU):
+    def __init__(self):
+        super().__init__(
+            width=0,
+            rob_size=0,
+            num_int_regs=0,
+            num_fp_regs=0,
+        )
+```
+---
+
+<!-- _class: twoCol -->
+
+## Configuring two processors
+
+Keep working in the following file:
+[materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
+
+In class LITTLE, set
+
+- width=**2**
+
+- rob_size=**30**
+
+- num_int_regs=**40**
+
+- num_fp_regs=**40**
+
+
+###
+```python
+class LITTLE(O3CPU):
+    def __init__(self):
+        super().__init__(
+            width=0,
+            rob_size=0,
+            num_int_regs=0,
+            num_fp_regs=0,
+        )
+```
+
+---
+
+## Run with big processor
+
+Open the following file:
+[materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
+
+First, we will run matrix-multiply with our big processor
+
+```python
+processor = big()
+
+# processor = LITTLE()
+```
+
+> Run with the following command
+>
+> `gem5 --outdir=big-proc ./materials/developing-gem5-models/04-cores/cores-complex.py`
+>
+> Make sure the out directory is set to **big-proc**
+
+---
+
+## Run with LITTLE processor
+
+Keep the following file open:
+[materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
+
+Next, we will run matrix-multiply with our LITTLE processor
+
+```python
+# processor = big()
+
+processor = LITTLE()
+```
+
+> Run with the following command
+>
+> `gem5 --outdir=LITTLE-proc ./materials/developing-gem5-models/04-cores/cores-complex.py`
+>
+> Make sure the out directory is set to **LITTLE-proc**
+
+---
+
+## Comparing big and LITTLE processors
+
+Run the following command
+
+```sh
+grep -ri "simSeconds" big-proc LITTLE-proc && grep -ri "numCycles" big-proc LITTLE-proc
+```
+
+Here are the expected results (Note: Some text is removed for readability)
+
+```sh
+big-proc/stats.txt:simSeconds                                           0.028124
+LITTLE-proc/stats.txt:simSeconds                                        0.036715
+big-proc/stats.txt:board.processor.cores.core.numCycles                 56247195
+LITTLE-proc/stats.txt:board.processor.cores.core.numCycles              73430220
+```
+
+Our LITTLE processor takes more time and more cycles than out big processor
+
+<!-- This is likely mostly because our LITTLE processor has to access the cache more times since it has less physical registers to work with
+
+grep -ri "l1dcaches.overallAccesses::total" big-proc LITTLE-proc -->
