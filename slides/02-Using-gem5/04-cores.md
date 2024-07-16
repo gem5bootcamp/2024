@@ -284,7 +284,6 @@ from gem5.isas import ISA
 # Uncomment the one you do want to use
 cpu_type = CPUTypes.ATOMIC
 # cpu_type = CPUTypes.TIMING
-# cpu_type = CPUTypes.O3
 ```
 
 > Let's run it!
@@ -305,7 +304,6 @@ Change `cpu_type` in cores.py to Timing
 # Uncomment the one you do want to use
 # cpu_type = CPUTypes.ATOMIC
 cpu_type = CPUTypes.TIMING
-# cpu_type = CPUTypes.O3
 ```
 
 > Let's run it!
@@ -351,7 +349,6 @@ Set `cpu_type` in cores.py to Atomic
 # Uncomment the one you do want to use
 cpu_type = CPUTypes.ATOMIC
 # cpu_type = CPUTypes.TIMING
-# cpu_type = CPUTypes.O3
 ```
 
 > Let's run it!
@@ -496,14 +493,12 @@ In general, if you don't specify the out-directory, it will be **m5out/stats.txt
 
 ## Material to use
 
-### Start by opening the following files
-
 > [materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
 > [materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
 
 ### Steps
 
-1. Update class big(O3CPU) and class LITTLE(O3CPU)
+1. Update class big(O3CPU) and LITTLE(O3CPU)
 2. Run with big processor
 3. Run with LITTLE processor
 4. Compare statistics
@@ -512,9 +507,26 @@ We will be running the same workload (**matrix-multiply**) on our board
 
 ---
 
+## Configuring two processors
+
+We will make one fast processor (**_big_**) and one slow processor (**_LITTLE_**)
+
+To do this, we will change **4** parameters in each processor
+
+- **width**
+  - width of fetch, decode, raname, issue, wb, and commit stages.
+- **rob_size**
+  - the number of entries in the reorder buffer.
+- **num_int_regs**
+  - the number of physical integer registers
+- **num_fp_regs**
+  - the number of physical vector/floating point registers.
+
+---
+
 <!-- _class: twoCol -->
 
-## Configuring two processors
+## Configuring big
 
 Open the following file:
 [materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
@@ -542,11 +554,12 @@ class big(O3CPU):
             num_fp_regs=0,
         )
 ```
+
 ---
 
 <!-- _class: twoCol -->
 
-## Configuring two processors
+## Configuring LITTLE
 
 Keep working in the following file:
 [materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
