@@ -26,12 +26,11 @@ author: Mahyar Samani, M. Mysore
 
 Let's build gem5 while we go through some basics. Do it by running the following command in the base gem5 directory
 
-<!-- Extra space makes it a little annoying to copy and paste
-
-Potentially add `cd gem5` to the code block -->
+<!-- Extra space makes it a little annoying to copy and paste -->
 
 ```sh
 
+cd gem5
 scons build/NULL/gem5.opt -j$(nproc)
 
 ```
@@ -153,15 +152,8 @@ Now, let's start building our SimObject in C++. First, let's create a file for o
 touch src/bootcamp/hello-sim-object/hello_sim_object.hh
 ```
 
-<!-- A little hard to read the next part
-
-Possibly reword
-
-**VERY IMPORTANT**: If a class inherits from another in Python, it should do the same in C++. For example, HelloSimObject inherits from SimObject in Python, so in C++, HelloSimObject should inherit from SimObject again.
-**VERY IMPORTANT**: SimObject parameter structs are inherited the same way the SimObject itself is. For example, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams-->
-
-**VERY IMPORTANT**: There should be a parallel between inheritance in Python and inheritance in C++. Otherwise said, when defining HelloSimObject in C++, it should inherit from SimObject.
-**VERY IMPORTANT**: Parameter structs of SimObjects follow a parallel inheritance to the SimObject inheritance. Otherwise said, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams.
+**VERY IMPORTANT**: If a class inherits from another in Python, it should do the same in C++. For example, HelloSimObject inherits from SimObject in Python, so in C++, HelloSimObject should inherit from SimObject.
+**VERY IMPORTANT**: SimObject parameter structs are inherited the same way the SimObject itself is. For example, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams
 
 ---
 
@@ -202,16 +194,12 @@ Things to note:
 
 <!-- Might want to define cyclic includes during actual talk (not necessarily on the slides) -->
 
-<!-- Add example for last bullet point (A little hard to read)
-
-Potentially reword: Every SimObject class needs to define a constructor that only takes one input. The input must be a constant reference object of its parameter struct. -->
-
 - `__BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__` is an include guard to prevent double includes and prevent cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the `gem5/src` directory with `_` being the separator.
 - `sim/sim_object.hh` holds the definition for class SimObject in C++.
 - As mentioned `params/HelloSimObject.hh` is auto-generated and defines a struct named `HelloSimObjectParams`.
 - Every SimObject should be defined inside the `namespace gem5`. Different categories of SimObjects may have their own specific namespace such as `gem5::memory`.
 - Class HelloSimObject (C++ counterpart for HelloSimObject in Python) should inherit from Class SimObject (C++ counterpart for SimObject in Python).
-- Every SimObject class needs to define a constructor that takes a constant reference object of its parameter struct as the only input. Later on, we will look at gem5's internal process that instantiates objects from SimObject classes.
+- Every SimObject class needs to define a constructor that only takes one input. The input must be a constant reference object of its parameter struct. Later on, we will look at gem5's internal process that instantiates objects from SimObject classes.
 
 ---
 
@@ -307,11 +295,7 @@ Now, the only thing left to do before we can use HelloSimObject in our configura
 scons build/NULL/gem5.opt -j$(nproc)
 ```
 
-<!-- Edit this line: ...gem5 directory will create a structure to my liking.
-
-Potential rewording: Running following set of commands in the base gem5 directory will create a clean structure. -->
-
-While we wait for gem5 to be built, we will focus on creating a configuration script that uses HelloSimObject. Let's create that script inside `gem5/configs`. First let's create a directory structure for our scripts. Running following set of commands in the base gem5 directory will create a structure to my liking.
+While we wait for gem5 to be built, we will focus on creating a configuration script that uses HelloSimObject. Let's create that script inside `gem5/configs`. First let's create a directory structure for our scripts. Running the following set of commands in the base gem5 directory will create a clean structure.
 
 ```sh
 mkdir configs/bootcamp
@@ -349,15 +333,7 @@ We will also need to import HelloSimObject into our configuration script. To do 
 from m5.objects.HelloSimObject import HelloSimObject
 ```
 
-<!-- Reword: we need to do is create an object of Root and an object of HelloSimObject.
-
-Change to
-
-...we need to do is create a Root object and a HelloSimObject object...
-
- -->
-
-Next thing we need to do is create an object of Root and an object of HelloSimObject. We can just add our HelloSimObject object as a child of the root object by using `.` operator. Add the following lines to your configuration to do that.
+The next thing we need to do is create a Root object and a HelloSimObject object. We can just add our HelloSimObject object as a child of the root object by using the `.` operator. Add the following lines to your configuration to do that.
 
 ```python
 root = Root(full_system=False)
