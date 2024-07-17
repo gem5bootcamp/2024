@@ -36,7 +36,8 @@ cpu_type = CPUTypes.ATOMIC
 # Uncomment for steps 2 and 3
 # cpu_type = CPUTypes.TIMING
 
-# Uncomment and look at this cpu_type on your own time
+# Note: O3CPU is the only CPU here that is modeled off of a real CPU
+# Uncomment and look at this cpu_type at home for fun!
 # cpu_type = CPUTypes.O3
 
 processor = SimpleProcessor(cpu_type=cpu_type, isa=ISA.RISCV, num_cores=8)
