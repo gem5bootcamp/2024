@@ -425,12 +425,11 @@ Here is another snippet of code further in the code of instantiate
         obj.init()
 ```
 
-In this step gem5 will call the `init` function from every `SimObject`. init is a virtual function defined by the `SimObject` class. Every `SimObject` based class can override this function. The purpose of the init function is similar to the constructor. However, it is guaranteed that when the init function from any `SimObject` is called all the `SimObject`s are created (i.e. their constructors are called).
+In this step gem5 will call the `init` function from every `SimObject`. `init` is a virtual function defined by the `SimObject` class. Every `SimObject` based class can override this function. The purpose of the `init` function is similar to the constructor. However, it is guaranteed that when the `init` function from any `SimObject` is called, all the `SimObject`s are created (i.e. their constructors are called).
 
-Below is the declaration for init in `src/sim/sim_object.hh`.
+Below is the declaration for `init` in `src/sim/sim_object.hh`.
 
 ```cpp
-
     /* init() is called after all C++ SimObjects have been created and
     *  all ports are connected.  Initializations that are independent
     *  of unserialization but rely on a fully instantiated and
@@ -456,8 +455,9 @@ Below shows yet another snippet from instantiate:
         for obj in root.descendants():
             obj.initState()
 ```
+<!-- What do you mean by unserialize a SimObject's state? Maybe describe what checkpoints are. -->
 
-`initState` and `loadState` are the last step of initializing `SimObject`s. However, only one of them is called for every simulation. loadState is called to unserialize a `SimObject`'s state from a checkpoint and initState is called only starting a simulation afresh (i.e. not from a checkpoint).
+`initState` and `loadState` are the last step of initializing `SimObject`s. However, only one of them is called for every simulation. `loadState` is called to unserialize a `SimObject`'s state from a checkpoint and `initState` is called only starting a simulation afresh (i.e. not from a checkpoint).
 
 Continued in next page.
 
@@ -465,7 +465,9 @@ Continued in next page.
 
 ## Detour: m5.instantiate: SimObject::initState, SimObject::loadState: C++
 
-Below is the declaration for initState and loadState in `src/sim/sim_object.hh`.
+<!-- What do you mean by "hook"? -->
+
+Below is the declaration for `initState` and `loadState` in `src/sim/sim_object.hh`.
 
 ```cpp
     /* loadState() is called on each SimObject when restoring from a
