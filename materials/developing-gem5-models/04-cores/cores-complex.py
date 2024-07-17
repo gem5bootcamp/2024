@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
 from gem5.components.boards.simple_board import SimpleBoard
@@ -8,7 +9,7 @@ from gem5.components.memory.memory import ChanneledMemory
 from gem5.components.processors.simple_processor import SimpleProcessor
 from gem5.components.processors.cpu_types import CPUTypes
 from gem5.isas import ISA
-from components.processors import big, LITTLE
+from components.processors import Big, Little
 
 # A simple script to test custom processors
 # We will run a simple application (riscv-matrix-multiply-run) with two different configurations of an O3 processor
@@ -22,19 +23,32 @@ from components.processors import big, LITTLE
     # 4. Compare the stats.txt file in /big/ /LITTLE/
 
 # In general run with the following command
-    # gem5 [optional: --outdir=<processor>] ./materials/developing-gem5-models/04-cores/cores-complex.py
+    # gem5 [optional: --outdir=<processor-type>-proc] ./materials/developing-gem5-models/04-cores/cores-complex.py
+
+# Argument Parsing
+
+USAGE = """ A simple script to test custom processors
+
+Example usage:
+
+gem5 --outdir=big-proc ./materials/developing-gem5-models/04-cores/cores-complex.py -p big
+"""
+
+parser = ArgumentParser(description=USAGE)
+
+parser.add_argument(
+    "-p",
+    "--processor",
+    type=str,
+    help="Type of processor (big or little)",
+    required=True,
+)
+
+arguments = parser.parse_args()
+
+# Setting up the board
 
 cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB") # Was 32
-# cache_hierarchy=MESITwoLevelCacheHierarchy(
-#     l1i_size="32 KiB",
-#     l1i_assoc=8,
-#     l1d_size="32 KiB",
-#     l1d_assoc=8,
-#     l2_size="64 KiB",
-#     l2_assoc=16,
-#     num_l2_banks=4,
-# )
-
 
 memory = ChanneledMemory(
     dram_interface_class=DDR4_2400_8x8,
@@ -43,11 +57,12 @@ memory = ChanneledMemory(
     size="1 GiB",
 )
 
-# Use big processor by default
-# processor = big()
-
-# Uncomment for step 3
-processor = LITTLE()
+if arguments.processor.lower() == "big":
+    processor = Big()
+elif arguments.processor.lower() == "little":
+    processor = Little()
+else:
+    print("Error: processor must be named big or little")
 
 board = SimpleBoard(
     clk_freq="2GHz",

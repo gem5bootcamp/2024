@@ -323,7 +323,7 @@ Make sure the out directory is set to **atomic-small-cache**.
 Run the following command.
 
 ```sh
-grep -ri "simOps" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache
+grep -ri "simOps" *cache
 ```
 
 Here are the expected results. (Note: Some text is removed for readability.)
@@ -342,7 +342,7 @@ timing-small-cache/stats.txt:simOps                                        33954
 Run the following command.
 
 ```sh
-grep -ri "numCycles" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache | grep "cores0"
+grep -ri "cores0.*numCycles" *cache
 ```
 
 Here are the expected results. (Note: Some text is removed for readability.)
@@ -532,12 +532,12 @@ Make sure the out directory is set to **little-proc**.
 
 ---
 
-## Comparing big and Little processors
+## Comparing Big and Little processors
 
 Run the following command.
 
 ```sh
-grep -ri "simSeconds" big-proc Little-proc && grep -ri "numCycles" big-proc Little-proc
+grep -ri "simSeconds" *proc && grep -ri "numCycles" *proc
 ```
 
 Here are the expected results. (Note: Some text is removed for readability.)
