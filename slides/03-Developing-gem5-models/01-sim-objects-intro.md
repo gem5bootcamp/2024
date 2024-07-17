@@ -5,7 +5,6 @@ theme: gem5
 title: Developing SimObjects in gem5
 author: Mahyar Samani, M. Mysore
 ---
-
 <!-- _class: title -->
 
 ## Developing SimObjects in gem5
@@ -156,7 +155,6 @@ touch src/bootcamp/hello-sim-object/hello_sim_object.hh
 **VERY IMPORTANT**: Parameter structs of SimObjects follow a parallel inheritance to the SimObject inheritance. Otherwise said, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams.
 
 ---
-
 <!-- _class: small-code -->
 
 ### SimObject Header File: First Few Lines
@@ -198,7 +196,6 @@ Things to note:
 - Every SimObject class needs to define a constructor that takes a constant reference object of its parameter struct as the only input. Later on, we will look at gem5's internal process that instantiates objects from SimObject classes.
 
 ---
-
 <!-- _class: small-code -->
 
 ### SimObject Source File: All the Code
@@ -261,7 +258,7 @@ Source("hello_sim_object.cc")
 
 Things to note:
 
-- `SimObject("HelloSimObject.py", sim_objects=["HelloSimObject"])` registers HelloSimObject as a SimObject. The first argument denotes the name of submodule that will be created under `m5.objects`. All the SimObjects listed under `sim_objects` will be added to that submodule. In this example, we will be able to import HelloSimObjects as `m5.objects.HelloSimObject.HelloSimObject`. It is possible to define more than one SimObjects in one Python script. Only SimObjects listed under sim_objects will be built.
+- `SimObject("HelloSimObject.py", sim_objects=["HelloSimObject"])` registers HelloSimObject as a SimObject. The first argument denotes the name of submodule that will be created under `m5.objects`. All the SimObjects listed under `sim_objects` will be added to that submodule. In this example, we will be able to import HelloSimObject as `m5.objects.HelloSimObject.HelloSimObject`. It is possible to define more than one SimObjects in one Python script. Only SimObjects listed under sim_objects will be built.
 - `Source("hello_sim_object.cc")` adds `hello_sim_object.cc` as a source file to be compiled.
 
 ---
@@ -350,7 +347,7 @@ Here is the complete version of our configuration script.
 ```python
 import m5
 from m5.objects.Root import Root
-from m5.objects.HelloSimObjet import HelloSimObject
+from m5.objects.HelloSimObject import HelloSimObject
 
 root = Root(full_system=False)
 root.hello = HelloSimObject()
@@ -362,9 +359,15 @@ print(f"Exited simulation because: {exit_event.getCause()}.")
 ```
 
 ---
+
+### Simulate: First Hello Example
+
+<!-- record with asciinema -->
+
+---
 <!-- _class: small-code -->
 
-### Detour: m5.instantiate: Calling Constrcutors and Connecting Ports
+### Detour: m5.instantiate: SimObject Constructors and Connecting Ports
 
 Below is a snippet of code from the definition of m5.instantiate:
 
@@ -379,8 +382,9 @@ Below is a snippet of code from the definition of m5.instantiate:
 This means that well you call m5.instantiate first all the SimObjects are created (i.e. their C++ constructors are called) and then all the port connections are created. If you don't know what a `Port` is already, don't worry. We will get to that in the later slides. For now, think of ports as a facility for SimObjects to send each other data.
 
 ---
+<!-- _class: small-code -->
 
-### Detour: m5.instantiate: Calling init, initState/loadState
+### Detour: m5.instantiate: SimObject::init
 
 Here is another snippet of code further in the code of instantiate
 
@@ -390,11 +394,64 @@ Here is another snippet of code further in the code of instantiate
         obj.init()
 ```
 
-In this step gem5 will call the `init` function from every SimObject. init is a virtual function defined by the SimObject class. Every SimObject based class can override this function. The purpose of the init function is to
+In this step gem5 will call the `init` function from every SimObject. init is a virtual function defined by the SimObject class. Every SimObject based class can override this function. The purpose of the init function is similar to the constructor. However, it is guaranteed that when the init function from any SimObject is called all the SimObjects are created (i.e. their constructors are called).
+
+Below is the declaration for init in `src/sim/sim_object.hh`.
+
+```cpp
+
+    /* init() is called after all C++ SimObjects have been created and
+    *  all ports are connected.  Initializations that are independent
+    *  of unserialization but rely on a fully instantiated and
+    *  connected SimObject graph should be done here. */
+    virtual void init();
+```
+
+---
+<!-- _class: small-code -->
+
+### Detour: m5.instantiate: SimObject::initState, SimObject::loadState
+
+Below shows yet another snippet from instantiate:
+
+```python
+# Restore checkpoint (if any)
+    if ckpt_dir:
+        _drain_manager.preCheckpointRestore()
+        ckpt = _m5.core.getCheckpoint(ckpt_dir)
+        for obj in root.descendants():
+            obj.loadState(ckpt)
+    else:
+        for obj in root.descendants():
+            obj.initState()
+```
+
+`initState` and `loadState` are the last step of initializing SimObjects. However, only one of them is called for every simulation. loadState is called to unserialize a SimObject's state from a checkpoint and initState is called only starting a simulation afresh (i.e. not from a checkpoint).
+
+Continued in next page.
 
 ---
 
-### Detour: A Glance at The SimObject Class
+### Detour: m5.instantiate: SimObject::initState, SimObject::loadState: C++
+
+Below is the declaration for initState and loadState in `src/sim/sim_object.hh`.
+
+```cpp
+    /* loadState() is called on each SimObject when restoring from a
+    *  checkpoint.  The default implementation simply calls
+    *  unserialize() if there is a corresponding section in the
+    *  checkpoint.  However, objects can override loadState() to get
+    *  other behaviors, e.g., doing other programmed initializations
+    *  after unserialize(), or complaining if no checkpoint section is
+    *  found. */
+    virtual void loadState(CheckpointIn &cp);
+    /* initState() is called on each SimObject when *not* restoring
+    *  from a checkpoint.  This provides a hook for state
+    *  initializations that are only required for a "cold start". */
+    virtual void initState();
+```
+
+---
 
 
 ---
