@@ -506,20 +506,20 @@ You will:
 ### Run a parallel test
 
 ```sh
-build/ALL/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
 ```
 
 Result is a failure!
 
 ```termout
-build/ALL/mem/ruby/protocol/L1Cache_Transitions.cc:266: panic: Invalid transition
+build/ALL_MyMSI/mem/ruby/protocol/L1Cache_Transitions.cc:266: panic: Invalid transition
 system.caches.controllers0 time: 73 addr: 0x9100 event: DataDirNoAcks state: IS_D
 ```
 
 ### Run with protocol trace
 
 ```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
 Start fixing the errors and fill in the `MyMSI-cache.sm`
@@ -554,13 +554,15 @@ transition(IS_D, {DataDirNoAcks, DataOwner}, S) {
 
 ```c++
 action(writeDataToCache, "wd", desc="Write data to the cache") {
-
-
-
+    peek(response_in, ResponseMsg) {
+        assert(is_valid(cache_entry));
+        cache_entry.DataBlk := in_msg.DataBlk;
+    }
 }
 ```
 Try again:
 ```sh
+scons build/ALL_MyMSI/gem5.opt -j$(nproc) PROTOCOL=MYMSI
 build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
@@ -573,12 +575,17 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
   - Make sure to call `set_cache_entry`. Asserting there is an entry available and that `cache_entry` is invalid is helpful.
 
 ```c++
-codeblock?
+action(allocateCacheBlock, "a", desc="Allocate a cache block") {
+    assert(is_invalid(cache_entry));
+    assert(cacheMemory.cacheAvail(address));
+    set_cache_entry(cacheMemory.allocate(address, new Entry));
+}
 ```
 
 Try again:
 
 ```sh
+scons build/ALL_MyMSI/gem5.opt -j$(nproc) PROTOCOL=MYMSI
 build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
