@@ -26,7 +26,7 @@ title: Modeling CPU cores in gem5
 
 ## gem5 CPU Models
 
-![width:1150px padding-top:500px](04-cores-imgs/Summary-of-gem5-models-2.png)
+![width:1150px Diagram to show inheritance for gem5 CPU Models](04-cores-imgs/Summary-of-models.drawio.svg)
 
 ---
 
@@ -55,7 +55,7 @@ Split transactions
 Models queuing delay and
 resource contention
 
-![bg auto width:1250px Diagram to show different CPU Model Timings](04-cores-imgs/Simple-CPU.png)
+![bg auto width:1250px Diagram to show different CPU Model Timings](04-cores-imgs/Simple-CPU.drawio.svg)
 
 ---
 
@@ -80,7 +80,7 @@ resource contention
 - **_Timing_** memory accesses _execute-in-execute_ semantics
 - Time buffers between stages
 
-![width:1000px O3CPU](04-cores-imgs/O3CPU.svg)
+![width:1000px O3CPU](04-cores-imgs/O3CPU.drawio.svg)
 
 ---
 
@@ -107,7 +107,7 @@ We will do this soon.
 
 ## MinorCPU
 
-![bg auto width:700px Diagram to show different CPU Models](04-cores-imgs/Minor-CPU.png)
+![bg auto width:700px Diagram to show different CPU Models](04-cores-imgs/MinorCPU.drawio.svg)
 
 <!-- 'https://nitish2112.github.io/post/gem5-minor-cpu/' Add "footer: " within the comment to make it appear on the slide-->
 
@@ -142,13 +142,13 @@ We will do this soon.
 - Timing
 - Caches, BP
 
-![bg width:1200px Diagram to show different CPU Models](04-cores-imgs/Summary-of-gem5-models-bg-2.png)
+![bg width:1250px Diagram to show different CPU Models](04-cores-imgs/Summary-of-models-bg.drawio.svg)
 
 ---
 
 ## Interaction of CPU model with other parts of gem5
 
-![bg auto width:1050px Diagram to show CPU Model Interactions](04-cores-imgs/CPU-interaction-model.png)
+![bg auto width:1050px Diagram to show CPU Model Interactions](04-cores-imgs/CPU-interaction-model.drawio.svg)
 
 ---
 
@@ -493,16 +493,10 @@ Open the following file.
 
 First, we will run matrix-multiply with our big processor.
 
-```python
-processor = big()
-
-# processor = Little()
-```
-
 Run with the following command.
 
 ```sh
-gem5 --outdir=big-proc cores-complex.py
+gem5 --outdir=big-proc cores-complex.py -p big
 ```
 
 Make sure the out directory is set to **big-proc**.
@@ -516,16 +510,10 @@ Keep the following file open.
 
 Next, we will run matrix-multiply with our Little processor.
 
-```python
-# processor = big()
-
-processor = Little()
-```
-
 Run with the following command.
 
 ```sh
-gem5 --outdir=little-proc cores-complex.py
+gem5 --outdir=little-proc cores-complex.py -p little
 ```
 
 Make sure the out directory is set to **little-proc**.
