@@ -56,12 +56,12 @@ In a gem5 build, each `SimObject` based class has 4 of files relating to it.
 - `SimObject` definition file: Python(ish) script:
   - Represents the model at the highest level. Allows instantiation of the model and interfacing with the C++ backend. It defines the sets of parameters for the model.
 - `SimObject` header file: C++ header file (.hh extension):
-  - Defines the `SimObject` class in C++.
+  - Declares the `SimObject` class in C++.
   Strongly tied to `SimObject` definition file.
 - `SimObject` source file: C++ source file (.cc extension):
   - Implements the `SimObject` functionalities.
 - `SimObjectParams` header file: **Auto-generated** C++ header file (.hh) from `SimObject` definition:
-  - Defines a C++ struct storing all the parameters of the `SimObject`.
+  - Declares a C++ struct storing all the parameters of the `SimObject`.
 
 ---
 
@@ -125,7 +125,7 @@ class HelloSimObject(SimObject):
 ```
 
 - `type` is the type name for the `SimObject` in python.
-- `cxx_header` denotes the path to the C++ header file that defines the `SimObject` in C++. **IMPORTANT**: This path should be specified relative to `gem5/src`.
+- `cxx_header` denotes the path to the C++ header file that declares the `SimObject` in C++. **IMPORTANT**: This path should be specified relative to `gem5/src`.
 - `cxx_class` is the name of your `SimObject` class in C++.
 
 `type`, `cxx_header`, and `cxx_class`are keywords defined by the `MetaSimObject` metaclass. For a complete list of these keywords look at `src/python/m5/SimObject::MetaSimObject`. Some (if not all) of these keyword variables can be skipped. However, I strongly encourage you to define `type`, `cxx_header`, `cxx_class` at the minimum.
@@ -196,8 +196,8 @@ Things to note:
 
 - `__BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__` is an include guard to prevent double includes and prevent cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the `gem5/src` directory with `_` being the separator.
 - `sim/sim_object.hh` holds the definition for class `SimObject` in C++.
-- As mentioned `params/HelloSimObject.hh` is auto-generated and defines a struct named `HelloSimObjectParams`.
-- Every `SimObject` should be defined inside the `namespace gem5`. Different categories of `SimObjects` may have their own specific namespace such as `gem5::memory`.
+- As mentioned `params/HelloSimObject.hh` is auto-generated and declares a struct named `HelloSimObjectParams`.
+- Every `SimObject` should be declared/defined inside the `namespace gem5`. Different categories of `SimObjects` may have their own specific namespace such as `gem5::memory`.
 - Class `HelloSimObject` (C++ counterpart for `HelloSimObject` in Python) should inherit from Class `SimObject` (C++ counterpart for `SimObject` in Python).
 - Every `SimObject` class needs to define a constructor that only takes one input. The input must be a constant reference object of its parameter struct. Later on, we will look at gem5's internal process that instantiates objects from `SimObject` classes.
 
