@@ -279,10 +279,11 @@ Create a new build directory for the gem5 binary with your protocol. Let's start
 ```sh
 scons defconfig build/ALL_MyMSI build_opts/ALL
 ```
-Modify [`ext/Kconfiglib/menuconfig.py`](../../gem5/ext/Kconfiglib/menuconfig.py) on line 707 in order to launch menuconfig.
-```locale.setlocale(locale.LC_ALL, "C") ```
-
-```sh
+Install the necessary locale and launch menuconfig.
+```
+apt-get update && apt-get install locales
+locale-gen en_US.UTF-8
+export LANG="en_US.UTF-8"
 scons menuconfig build/ALL_MyMSI
 # Ruby -> Enable -> Ruby protocol -> MyMSI
 ```
@@ -521,7 +522,7 @@ system.caches.controllers0 time: 73 addr: 0x9100 event: DataDirNoAcks state: IS_
 build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
-Start fixing the errors and fill in the `// Fill this in`!
+Start fixing the errors and fill in the `MyMSI-cache.sm`
 
 ---
 
@@ -534,7 +535,12 @@ Start fixing the errors and fill in the `// Fill this in`!
   - pop the response queue
 
 ```c++
-codeblock?
+transition(IS_D, {DataDirNoAcks, DataOwner}, S) {
+    writeDataToCache;
+    deallocateTBE;
+    externalStoreHit;
+    popResponseQueue;
+}
 ```
 
 ---
@@ -547,13 +553,16 @@ codeblock?
   - Make sure to have `assert(is_valid(cache_entry))`
 
 ```c++
-codeblock?
+action(writeDataToCache, "wd", desc="Write data to the cache") {
+    assert(is_valid(cache_entry));
+
+
+
+}
 ```
-
 Try again:
-
 ```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
 ---
