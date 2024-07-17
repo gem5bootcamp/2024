@@ -57,6 +57,8 @@ scons build/NULL/gem5.opt -j$(nproc)
 
 In a gem5 build, each `SimObject` based class has 4 of files relating to it.
 
+<!-- SimObject definition file, (.py extension?) -->
+
 - SimObject definition file: Python(ish) script:
   - Represents the model at the highest level. Allows instantiation of the model and interfacing with the C++ backend. It defines the sets of parameters for the model.
 - SimObject header file: C++ header file (.hh extension):
@@ -68,6 +70,11 @@ In a gem5 build, each `SimObject` based class has 4 of files relating to it.
   - Defines a C++ struct storing all the parameters of the SimObject`.
 
 ---
+
+<!-- Make this a section slide (maybe) and add the text onto another slide called Steps or smthn
+That way the following slides can be h2 instead of h3 -->
+<!-- Make this a section slide (maybe) and add the text onto another slide called Steps or smthn
+That way the following slides can be h2 instead of h3 -->
 
 ### HelloSimObject
 
@@ -83,6 +90,8 @@ Let's create a python file for our SimObject under:
 `src/bootcamp/hello-sim-object/HelloSimObject.py`.
 
 To do this run the following commands in the base gem5 directory:
+
+<!-- Add `cd gem5` into the code block -->
 
 ```sh
 mkdir src/bootcamp
@@ -126,6 +135,8 @@ class HelloSimObject(SimObject):
     cxx_class = "gem5::HelloSimObject"
 ```
 
+<!-- The text after IMPORTANT: is super helpful!! Super great info on this slide -->
+
 - `type` is the type name for the SimObject in python.
 - `cxx_header` denotes the path to the C++ header file that defines the SimObject in C++. **IMPORTANT**: This path should be specified relative to `gem5/src`.
 - `cxx_class` is the name of your SimObject class in C++.
@@ -134,7 +145,7 @@ class HelloSimObject(SimObject):
 
 ---
 
-### Word from the Wise and A Little Peek into the Future
+### Word to the Wise and A Little Peek into the Future
 
 - I strongly recommend setting `type` to the name of the SimObject class in python and making sure the C++ class name is the same as the Python class. You will see throughout the gem5 codebase that this is *not* always the case. However, I strongly recommend following this rule to rid yourself of any compilation headaches.
 
@@ -146,22 +157,34 @@ class HelloSimObject(SimObject):
 
 Now, let's start building our SimObject in C++. First, let's create a file for our SimObject by running the following commands in the base gem5 directory.
 
-**REMEMBER**: We set `cxx_header` to `bootcamp/hello-sim-object/hello_sim_object.hh`. Therefore, we need to the definition for HelloSimObject in a file with the same path.
+**REMEMBER**: We set `cxx_header` to `bootcamp/hello-sim-object/hello_sim_object.hh`. Therefore, we need to add the definition for HelloSimObject in a file with the same path.
+
+<!-- Might be worth reminding them to make sure they're still in the gem5 directory -->
 
 ```sh
 touch src/bootcamp/hello-sim-object/hello_sim_object.hh
 ```
+<!-- A little hard to read the next part
 
-**VERY IMPORTANT**: There should be a parallel between inheritance in Python and inheritance in C++. Otherwise said, when defining HelloSimObject in C++, it should inherit from SimObject.
-**VERY IMPORTANT**: Parameter structs of SimObjects follow a parallel inheritance to the SimObject inheritance. Otherwise said, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams.
+Possibly reword
+
+**VERY IMPORTANT**: If a class inherits from another in Python, it should do the same in C++. For example, HelloSimObject inherits from SimObject in Python, so in C++, HelloSimObject should inherit from SimObject again.
+**VERY IMPORTANT**: SimObject parameter structs are inherited the same way the SimObject itself is. For example, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams-->
+
+**VERY IMPORTANT**: There should be a parallel between inheritance in Python and inheritance in C++. In other words, when defining HelloSimObject in C++, it should inherit from SimObject.
+**VERY IMPORTANT**: Parameter structs of SimObjects follow a parallel inheritance to the SimObject inheritance. In other words, if HelloSimObject inherits from SimObject, HelloSimObjectParams inherits from SimObjectParams.
 
 ---
 
 <!-- _class: small-code -->
 
+
 ### SimObject Header File: First Few Lines
 
 Open `src/bootcamp/hello-sim-object/hello_sim_object.hh` in your editor of choice and add the following code to it.
+
+###
+
 
 ```cpp
 #ifndef __BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__
@@ -188,6 +211,8 @@ class HelloSimObject: public SimObject
 
 ### SimObject Header File: Deeper Look into the First Few Lines
 
+<!-- Break into two slides (The wall of text is a little overwhelming) and add an example to the last bullet point -->
+
 Things to note:
 
 - `__BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__` is an include guard to prevent double includes and prevent cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the `gem5/src` directory with `_` being the separator.
@@ -199,12 +224,21 @@ Things to note:
 
 ---
 
-<!-- _class: small-code -->
-
-### SimObject Source File: All the Code
+### SimObject Source File: Creating the Files
 
 Let's create a source file for HelloSimObject under:
 `src/bootcamp/hello-sim-object/hello_sim_object.cc`.
+
+Make sure you're in the **gem5** directory and run the following command.
+```sh
+touch src/bootcamp/hello-sim-object/hello_sim_object.cc
+```
+
+---
+
+<!-- _class: small-code -->
+
+### SimObject Source File: All the Code
 
 Open `src/bootcamp/hello-sim-object/hello_sim_object.cc` in your editor of choice and add the following code to it.
 

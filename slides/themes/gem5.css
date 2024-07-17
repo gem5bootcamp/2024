@@ -219,11 +219,11 @@ code {
 /* For small code block */
 
 section.small-code pre {
-    line-height: 14px;
+    line-height: 26px;
 }
 
 section.small-code pre code {
-    font-size: 12px;
+    font-size: 20px;
 }
 
 /*!
