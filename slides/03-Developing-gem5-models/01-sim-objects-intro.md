@@ -300,7 +300,7 @@ touch configs/bootcamp/hello-sim-object/first-hello-example.py
 
 ## Configuration Script: First Hello Example: m5 and Root
 
-Open [configs/bootcamp/first-hello-example.py](../../gem5/configs/bootcamp/first-hello-example.py) in your editor of choice.
+Open [configs/bootcamp/first-hello-example.py](../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py) in your editor of choice.
 
 To run a simulation, we will need to interface with gem5's backend. `m5` will allow us to call on the C++ backend to instantiate `SimObject`s in C++ and simulate them. To import m5 into your configuration script add the following to your code.
 
@@ -381,7 +381,9 @@ print(f"Exited simulation because: {exit_event.getCause()}.")
 
 ## Simulate: First Hello Example
 
+<!-- put shell command to run simulation, run it in gem5 base directory -->
 <!-- record with asciinema -->
+
 
 ---
 <!-- _class: title -->
@@ -600,4 +602,5 @@ print(f"Exited simulation because: {exit_event.getCause()}.")
 
 ## Simulate: Second Hello Example
 
+<!-- put shell command to run simulation, run it in gem5 base directory -->
 <!-- record with asciinema -->
