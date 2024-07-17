@@ -26,7 +26,7 @@ from gem5.simulate.simulator import Simulator
 # In general: Run with gem5 [optional: --outdir=<cpu_type>-<cache_size>-cache] ./materials/developing-gem5-models/04-cores/cores.py
 
 # Start with 32KiB and change to 1KiB during step 3
-cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
+cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="32KiB", l1i_size="32KiB")
 
 memory = SingleChannelDDR3_1600("1GiB")
 
