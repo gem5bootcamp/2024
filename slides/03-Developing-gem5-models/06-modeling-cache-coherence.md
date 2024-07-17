@@ -554,7 +554,6 @@ transition(IS_D, {DataDirNoAcks, DataOwner}, S) {
 
 ```c++
 action(writeDataToCache, "wd", desc="Write data to the cache") {
-    assert(is_valid(cache_entry));
 
 
 
