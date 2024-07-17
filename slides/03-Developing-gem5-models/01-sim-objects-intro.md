@@ -197,7 +197,7 @@ Things to note:
 - `__BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__` is an include guard to prevent double includes and prevent cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the `gem5/src` directory with `_` being the separator.
 - `sim/sim_object.hh` holds the definition for class `SimObject` in C++.
 - As mentioned `params/HelloSimObject.hh` is auto-generated and declares a struct named `HelloSimObjectParams`.
-- Every `SimObject` should be declared/defined inside the `namespace gem5`. Different categories of `SimObjects` may have their own specific namespace such as `gem5::memory`.
+- Every `SimObject` should be declared/defined inside the `namespace gem5`. Different categories of `SimObject`s may have their own specific namespace such as `gem5::memory`.
 - Class `HelloSimObject` (C++ counterpart for `HelloSimObject` in Python) should inherit from Class `SimObject` (C++ counterpart for `SimObject` in Python).
 - Every `SimObject` class needs to define a constructor that only takes one input. The input must be a constant reference object of its parameter struct. Later on, we will look at gem5's internal process that instantiates objects from `SimObject` classes.
 
@@ -282,7 +282,7 @@ Source("hello_sim_object.cc")
 
 Things to note:
 
-- `SimObject("HelloSimObject.py", sim_objects=["HelloSimObject"])` registers `HelloSimObject` as a `SimObject`. The first argument denotes the name of submodule that will be created under `m5.objects`. All the `SimObjects` listed under `sim_objects` will be added to that submodule. In this example, we will be able to import `HelloSimObjects` as `m5.objects.HelloSimObject.HelloSimObject`. It is possible to define more than one `SimObjects` in one Python script. Only `SimObjects` listed under sim_objects will be built.
+- `SimObject("HelloSimObject.py", sim_objects=["HelloSimObject"])` registers `HelloSimObject` as a `SimObject`. The first argument denotes the name of submodule that will be created under `m5.objects`. All the `SimObject`s listed under `sim_objects` will be added to that submodule. In this example, we will be able to import `HelloSimObject`s as `m5.objects.HelloSimObject.HelloSimObject`. It is possible to define more than one `SimObject`s in one Python script. Only `SimObject`s listed under sim_objects will be built.
 - `Source("hello_sim_object.cc")` adds `hello_sim_object.cc` as a source file to be compiled.
 
 ---
@@ -309,7 +309,7 @@ touch configs/bootcamp/hello-sim-object/first-hello-example.py
 
 Open `configs/bootcamp/hello-sim-object/first-hello-example.py` in your editor of choice.
 
-To run a simulation, we will need to interface with gem5's backend. `m5` will allow us to call on the C++ backend to instantiate `SimObjects` in C++ and simulate them. To import m5 into your configuration script add the following to your code.
+To run a simulation, we will need to interface with gem5's backend. `m5` will allow us to call on the C++ backend to instantiate `SimObject`s in C++ and simulate them. To import m5 into your configuration script add the following to your code.
 
 ```python
 import m5
@@ -346,13 +346,13 @@ root.hello = HelloSimObject()
 
 ## Configuration Script: First Hello Example: Instantiation in C++ and Simulation
 
-Next, let's tell gem5 to instantiate our `SimObjects` in C++ by calling `instantiate` from m5. Add the following line to your code to do that.
+Next, let's tell gem5 to instantiate our `SimObject`s in C++ by calling `instantiate` from m5. Add the following line to your code to do that.
 
 ```python
 m5.instantiate()
 ```
 
-Now that we have instantiated our `SimObjects`, we can tell gem5 to start simulation. We do that by calling `simulate` from m5. Add the following line to your code to do that.
+Now that we have instantiated our `SimObject`s, we can tell gem5 to start simulation. We do that by calling `simulate` from m5. Add the following line to your code to do that.
 
 ```python
 exit_event = m5.simulate()
@@ -410,7 +410,7 @@ Below is a snippet of code from the definition of m5.instantiate:
         obj.connectPorts()
 ```
 
-This means that well you call m5.instantiate first all the `SimObjects` are created (i.e. their C++ constructors are called) and then all the port connections are created. If you don't know what a `Port` is already, don't worry. We will get to that in the later slides. For now, think of ports as a facility for `SimObjects` to send each other data.
+This means that well you call m5.instantiate first all the `SimObject`s are created (i.e. their C++ constructors are called) and then all the port connections are created. If you don't know what a `Port` is already, don't worry. We will get to that in the later slides. For now, think of ports as a facility for `SimObject`s to send each other data.
 
 ---
 <!-- _class: small-code -->
@@ -425,7 +425,7 @@ Here is another snippet of code further in the code of instantiate
         obj.init()
 ```
 
-In this step gem5 will call the `init` function from every SimObject. init is a virtual function defined by the SimObject class. Every SimObject based class can override this function. The purpose of the init function is similar to the constructor. However, it is guaranteed that when the init function from any SimObject is called all the SimObjects are created (i.e. their constructors are called).
+In this step gem5 will call the `init` function from every `SimObject`. init is a virtual function defined by the `SimObject` class. Every `SimObject` based class can override this function. The purpose of the init function is similar to the constructor. However, it is guaranteed that when the init function from any `SimObject` is called all the `SimObject`s are created (i.e. their constructors are called).
 
 Below is the declaration for init in `src/sim/sim_object.hh`.
 
@@ -457,7 +457,7 @@ Below shows yet another snippet from instantiate:
             obj.initState()
 ```
 
-`initState` and `loadState` are the last step of initializing SimObjects. However, only one of them is called for every simulation. loadState is called to unserialize a SimObject's state from a checkpoint and initState is called only starting a simulation afresh (i.e. not from a checkpoint).
+`initState` and `loadState` are the last step of initializing `SimObject`s. However, only one of them is called for every simulation. loadState is called to unserialize a `SimObject`'s state from a checkpoint and initState is called only starting a simulation afresh (i.e. not from a checkpoint).
 
 Continued in next page.
 
