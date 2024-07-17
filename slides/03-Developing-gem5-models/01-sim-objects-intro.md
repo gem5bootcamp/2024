@@ -250,7 +250,7 @@ It can be passed to SimObject::SimObject because it inherits from SimObjectParam
 
 Things to note:
 
-- gem5's convention for the order of include statements is as follows: the *header for the `SimObject`* first, *C++ libraries in alphabetical order*, and *other gem5 header files in alphabetical order*.
+- gem5's convention for the order of include statements is as follows: the *header for the* `SimObject` first, *C++ libraries in alphabetical order*, and *other gem5 header files in alphabetical order*.
 - We only define the constructor of the `HelloSimObject` class since that's the only function it has so far.
 - The `params` object passed to the `HelloSimObject::HelloSimObject` is an object of `HelloSimObjectParams` that inherits from `SimObjectParams`. This means params can be passed to the `SimObject::SimObject`.
 
