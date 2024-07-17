@@ -173,7 +173,7 @@ We will do this soon.
 
 ## Material to use
 
-### Start by opening the following file
+### Start by opening the following file.
 
 [materials/developing-gem5-models/04-cores/cores.py](../../materials/developing-gem5-models/04-cores/cores.py)
 
@@ -184,7 +184,7 @@ We will do this soon.
 3. Reduce the cache size
 4. Change the CPU type back to Atomic
 
-We will be running a program (workload) called **matrix-multiply** on our board
+We will be running a program (workload) called **matrix-multiply** on our board.
 
 ---
 
@@ -214,7 +214,7 @@ from gem5.isas import ISA
 
 ## Let's start with Atomic CPU
 
-`cpu_type` in cores.py should already be set to Atomic
+`cpu_type` in cores.py should already be set to Atomic.
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -229,13 +229,13 @@ Let's run it!
 gem5 --outdir=atomic-normal-cache cores.py
 ```
 
-Make sure the out directory is set to **atomic-normal-cache**
+Make sure the out directory is set to **atomic-normal-cache**.
 
 ---
 
 ## Next, try Timing CPU
 
-Change `cpu_type` in cores.py to Timing
+Change `cpu_type` in cores.py to Timing.
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -250,7 +250,7 @@ Let's run it!
 gem5 --outdir=timing-normal-cache cores.py
 ```
 
-Make sure the out directory is set to **timing-normal-cache**
+Make sure the out directory is set to **timing-normal-cache**.
 
 ---
 
@@ -274,13 +274,13 @@ Let's run it!
 gem5 --outdir=timing-small-cache cores.py
 ```
 
-Make sure the out directory is set to **timing-small-cache**
+Make sure the out directory is set to **timing-small-cache**.
 
 ---
 
 ## Now let's try a Small Cache with Atomic CPU
 
-Set `cpu_type` in cores.py to Atomic
+Set `cpu_type` in cores.py to Atomic.
 
 ```python
 # Comment out the cpu_types you don't want to use and
@@ -295,7 +295,7 @@ Let's run it!
 gem5 --outdir=atomic-small-cache cores.py
 ```
 
-Make sure the out directory is set to **atomic-small-cache**
+Make sure the out directory is set to **atomic-small-cache**.
 
 ---
 
@@ -320,13 +320,13 @@ Make sure the out directory is set to **atomic-small-cache**
 
 ## Look at the Number of Operations
 
-Run the following command
+Run the following command.
 
 ```sh
 grep -ri "simOps" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache
 ```
 
-Here are the expected results
+Here are the expected results. (Note: Some text is removed for readability.)
 
 ```sh
 atomic-normal-cache/stats.txt:simOps                                       33954560
@@ -339,13 +339,13 @@ timing-small-cache/stats.txt:simOps                                        33954
 
 ## Look at the Number of Execution Cycles
 
-Run the following command
+Run the following command.
 
 ```sh
 grep -ri "numCycles" atomic-normal-cache atomic-small-cache timing-normal-cache timing-small-cache | grep "cores0"
 ```
 
-Here are the expected results (Note: Some text is removed for readability)
+Here are the expected results. (Note: Some text is removed for readability.)
 
 ```sh
 atomic-normal-cache/stats.txt:board.processor.cores0.core.numCycles        38157549
@@ -354,19 +354,19 @@ timing-normal-cache/stats.txt:board.processor.cores0.core.numCycles        62838
 timing-small-cache/stats.txt:board.processor.cores0.core.numCycles         96494522
 ```
 
-Note that for Atomic CPU, the number of cycles is the **same** for a large cache _and_ a small cache
+Note that for Atomic CPU, the number of cycles is the **same** for a large cache _and_ a small cache.
 
-This is because Atomic CPU ignores memory access latency
+This is because Atomic CPU ignores memory access latency.
 
 ---
 
 ## Extra Notes about gem5 Statistics
 
-When you specify the out-directory for the stats file (when you use the flag `--outdir=<outdir-name>`), go to **\<outdir-name>/stats.txt** to look at the entire statistics file
+When you specify the out-directory for the stats file (when you use the flag `--outdir=<outdir-name>`), go to **\<outdir-name>/stats.txt** to look at the entire statistics file.
 
-For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-small-cache/stats.txt**
+For example, to look at the statistics file for the Atomic CPU with a small cache, go to **atomic-small-cache/stats.txt**.
 
-In general, if you don't specify the out-directory, it will be **m5out/stats.txt**
+In general, if you don't specify the out-directory, it will be **m5out/stats.txt**.
 
 ### Other statistics to look at
 
@@ -407,24 +407,24 @@ In general, if you don't specify the out-directory, it will be **m5out/stats.txt
 3. Run with Little processor
 4. Compare statistics
 
-We will be running the same workload (**matrix-multiply**) on our board
+We will be running the same workload (**matrix-multiply**) on our board.
 
 ---
 
 ## Configuring two processors
 
-We will make one fast processor (**_Big_**) and one slow processor (**_Little_**)
+We will make one fast processor (**_Big_**) and one slow processor (**_Little_**).
 
-To do this, we will change **4** parameters in each processor
+To do this, we will change **4** parameters in each processor.
 
 - **width**
-  - width of fetch, decode, raname, issue, wb, and commit stages.
+  - width of fetch, decode, raname, issue, wb, and commit stages
 - **rob_size**
-  - the number of entries in the reorder buffer.
+  - the number of entries in the reorder buffer
 - **num_int_regs**
   - the number of physical integer registers
 - **num_fp_regs**
-  - the number of physical vector/floating point registers.
+  - the number of physical vector/floating point registers
 
 ---
 
@@ -432,7 +432,7 @@ To do this, we will change **4** parameters in each processor
 
 ## Configuring Big
 
-Open the following file:
+Open the following file.
 [materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
 
 In class big, set
@@ -461,7 +461,7 @@ class Big(O3CPU):
 
 ## Configuring Little
 
-Keep working in the following file:
+Keep working in the following file.
 [materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
 
 In class Little, set
@@ -488,10 +488,10 @@ class Little(O3CPU):
 
 ## Run with big processor
 
-Open the following file:
+Open the following file.
 [materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
 
-First, we will run matrix-multiply with our big processor
+First, we will run matrix-multiply with our big processor.
 
 ```python
 processor = big()
@@ -499,22 +499,22 @@ processor = big()
 # processor = Little()
 ```
 
-Run with the following command
+Run with the following command.
 
 ```sh
 gem5 --outdir=big-proc cores-complex.py
 ```
 
-Make sure the out directory is set to **big-proc**
+Make sure the out directory is set to **big-proc**.
 
 ---
 
 ## Run with Little processor
 
-Keep the following file open:
+Keep the following file open.
 [materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
 
-Next, we will run matrix-multiply with our Little processor
+Next, we will run matrix-multiply with our Little processor.
 
 ```python
 # processor = big()
@@ -522,25 +522,25 @@ Next, we will run matrix-multiply with our Little processor
 processor = Little()
 ```
 
-Run with the following command
+Run with the following command.
 
 ```sh
 gem5 --outdir=little-proc cores-complex.py
 ```
 
-Make sure the out directory is set to **little-proc**
+Make sure the out directory is set to **little-proc**.
 
 ---
 
 ## Comparing big and Little processors
 
-Run the following command
+Run the following command.
 
 ```sh
 grep -ri "simSeconds" big-proc Little-proc && grep -ri "numCycles" big-proc Little-proc
 ```
 
-Here are the expected results (Note: Some text is removed for readability)
+Here are the expected results. (Note: Some text is removed for readability.)
 
 ```sh
 big-proc/stats.txt:simSeconds                                           0.028124
@@ -549,7 +549,7 @@ big-proc/stats.txt:board.processor.cores.core.numCycles                 56247195
 little-proc/stats.txt:board.processor.cores.core.numCycles              73430220
 ```
 
-Our little processor takes more time and more cycles than out big processor
+Our little processor takes more time and more cycles than out big processor.
 
 <!-- This is likely mostly because our Little processor has to access the cache more times since it has less physical registers to work with
 
