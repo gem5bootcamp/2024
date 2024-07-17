@@ -51,7 +51,7 @@ scons build/NULL/gem5.opt -j$(nproc)
 
 In a gem5 build, each `SimObject` based class has 4 of files relating to it.
 
-- `SimObject` definition file: Python(ish) script:
+- `SimObject` definition file: Python(ish) script (.py extension):
   - Represents the model at the highest level. Allows instantiation of the model and interfacing with the C++ backend. It defines the sets of parameters for the model.
 - `SimObject` header file: C++ header file (.hh extension):
   - Declares the `SimObject` class in C++.
@@ -130,7 +130,7 @@ class HelloSimObject(SimObject):
 
 ---
 
-## Word from the Wise and A Little Peek into the Future
+## Word to the Wise and A Little Peek into the Future
 
 - I strongly recommend setting `type` to the name of the `SimObject` class in python and making sure the C++ class name is the same as the Python class. You will see throughout the gem5 codebase that this is *not* always the case. However, I strongly recommend following this rule to rid yourself of any compilation headaches.
 
@@ -140,9 +140,7 @@ class HelloSimObject(SimObject):
 
 ## SimObject Header File: Creating the Files
 
-Now, let's start building our `SimObject` in C++. First, let's create a file for our `SimObject` by running the following commands in the base gem5 directory.
-
-**REMEMBER**: We set `cxx_header` to `bootcamp/hello-sim-object/hello_sim_object.hh`. Therefore, we need to add the definition for `HelloSimObject` in a file with the same path.
+Now, let's start building our `SimObject` in C++. First, let's create a file for our `SimObject` by running the following commands in the base gem5 directory. **REMEMBER**: We set `cxx_header` to `bootcamp/hello-sim-object/hello_sim_object.hh`. Therefore, we need to add the definition for `HelloSimObject` in a file with the same path.
 
 <!-- Might be worth reminding them to make sure they're still in the gem5 directory -->
 
