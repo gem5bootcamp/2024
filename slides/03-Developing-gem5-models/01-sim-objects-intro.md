@@ -24,15 +24,13 @@ author: Mahyar Samani, M. Mysore
 
 ## Let's begin by building gem5
 
-Let's build gem5 while we go through some basics. Do it by running the following command in the base gem5 directory
+Let's build gem5 in the base gem5 directory while we go through some basics. Do it by running the following commands.
 
 <!-- Extra space makes it a little annoying to copy and paste -->
 
 ```sh
-
 cd gem5
 scons build/NULL/gem5.opt -j$(nproc)
-
 ```
 
 ---
@@ -76,7 +74,7 @@ We will start building our first `SimObject` called `HelloSimObject` and look at
 ## SimObject Definition File: Creating the Files
 
 Let's create a python file for our `SimObject` under:
-`src/bootcamp/hello-sim-object/HelloSimObject.py`.
+[src/bootcamp/hello-sim-object/HelloSimObject.py](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py)
 
 To do this run the following commands in the base gem5 directory:
 
@@ -92,7 +90,7 @@ touch src/bootcamp/hello-sim-object/HelloSimObject.py
 
 ## SimObject Definition File: Importing and Defining
 
-Open `src/bootcamp/hello-sim-object/HelloSimObject.py` in your editor of choice.
+Open [src/bootcamp/hello-sim-object/HelloSimObject.py](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) in your editor of choice.
 
 In `HelloSimObject.py` we will define a new class that represents our `HelloSimObject`.
 We need to import the definition for `SimObject` from `m5.objects.SimObject`.
@@ -208,13 +206,13 @@ Things to note:
 ## SimObject Source File: All the Code
 
 Let's create a source file for `HelloSimObject` under:
-`src/bootcamp/hello-sim-object/hello_sim_object.cc` with the following command.
+[src/bootcamp/hello-sim-object/hello_sim_object.cc](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc) with the following command.
 
 ```sh
 touch src/bootcamp/hello-sim-object/hello_sim_object.cc
 ```
 
-Open `src/bootcamp/hello-sim-object/hello_sim_object.cc` in your editor of choice and add the following code to it.
+Open [src/bootcamp/hello-sim-object/hello_sim_object.cc](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc) in your editor of choice and add the following code to it.
 
 ```cpp
 #include "bootcamp/hello-sim-object/hello_sim_object.hh"
@@ -242,10 +240,10 @@ It can be passed to SimObject::SimObject because it inherits from SimObjectParam
 
 Things to note:
 
-- gem5's convention for the order of include statements is as follows
-  - the *header for the* `SimObject` first
-  - *C++ libraries in alphabetical order*
-  - *other gem5 header files in alphabetical order*.
+- gem5's convention for the order of include statements is as follows.
+  - the header for the `SimObject` first
+  - C++ libraries in alphabetical order
+  - other gem5 header files in alphabetical order.
 - We only define the constructor of the `HelloSimObject` class since that's the only function it has so far.
 - The `params` object passed to the `HelloSimObject::HelloSimObject` is an object of `HelloSimObjectParams` that inherits from `SimObjectParams`. This means params can be passed to the `SimObject::SimObject`.
 
@@ -302,7 +300,7 @@ touch configs/bootcamp/hello-sim-object/first-hello-example.py
 
 ## Configuration Script: First Hello Example: m5 and Root
 
-Open `configs/bootcamp/hello-sim-object/first-hello-example.py` in your editor of choice.
+Open [configs/bootcamp/first-hello-example.py](../../gem5/configs/bootcamp/first-hello-example.py) in your editor of choice.
 
 To run a simulation, we will need to interface with gem5's backend. `m5` will allow us to call on the C++ backend to instantiate `SimObject`s in C++ and simulate them. To import m5 into your configuration script add the following to your code.
 
