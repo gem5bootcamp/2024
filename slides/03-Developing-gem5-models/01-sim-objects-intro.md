@@ -145,8 +145,6 @@ class HelloSimObject(SimObject):
 
 Now, let's start building our SimObject in C++. First, let's create a file for our SimObject by running the following commands in the base gem5 directory.
 
-<!-- Typo: ...we need to (add?) the definition for HelloSimObject... -->
-
 **REMEMBER**: We set `cxx_header` to `bootcamp/hello-sim-object/hello_sim_object.hh`. Therefore, we need to add the definition for HelloSimObject in a file with the same path.
 
 <!-- Might be worth reminding them to make sure they're still in the gem5 directory -->
