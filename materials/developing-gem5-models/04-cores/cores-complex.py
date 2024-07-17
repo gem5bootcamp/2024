@@ -1,31 +1,25 @@
 from argparse import ArgumentParser
+from components.processors import Big, Little
+from gem5.components.cachehierarchies.classic.private_l1_cache_hierarchy import PrivateL1CacheHierarchy
+from gem5.components.memory.memory import ChanneledMemory
 from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
-from gem5.components.boards.simple_board import SimpleBoard
-from gem5.components.cachehierarchies.classic.private_l1_cache_hierarchy import PrivateL1CacheHierarchy
-# from gem5.components.cachehierarchies.ruby.mesi_two_level_cache_hierarchy import MESITwoLevelCacheHierarchy
 from m5.objects import DDR4_2400_8x8
-from gem5.components.memory.memory import ChanneledMemory
-from gem5.components.processors.simple_processor import SimpleProcessor
-from gem5.components.processors.cpu_types import CPUTypes
-from gem5.isas import ISA
-from components.processors import Big, Little
 
 # A simple script to test custom processors
 # We will run a simple application (riscv-matrix-multiply-run) with two different configurations of an O3 processor
 
 # Steps
     # 1. Go to components/processors.py and update class big(O3CPU) and class LITTLE(O3CPU)
-    # 2. In this file, leave processor=big()
-        # Run with # gem5 --outdir=big-proc ./materials/developing-gem5-models/04-cores/cores-complex.py
-    # 3. In this file, comment out processor=big() and uncomment processor=LITTLE()
-        # Run with # gem5 --outdir=LITTLE-proc ./materials/developing-gem5-models/04-cores/cores-complex.py
-    # 4. Compare the stats.txt file in /big/ /LITTLE/
+    # 2. Run with `gem5 --outdir=big-proc ./materials/developing-gem5-models/04-cores/cores-complex.py -p big`
+    # 3. Run with `gem5 --outdir=little-proc ./materials/developing-gem5-models/04-cores/cores-complex.py -p little`
+    # 4. Compare the stats.txt file in /big-proc/ and /little-proc/
 
 # In general run with the following command
-    # gem5 [optional: --outdir=<processor-type>-proc] ./materials/developing-gem5-models/04-cores/cores-complex.py
+    # gem5 [optional: --outdir=<processor-type>-proc] ./materials/developing-gem5-models/04-cores/cores-complex.py -p <processor-type>
+    # Note that processor-type should be "big" or "little"
 
-# Argument Parsing
+# *** Argument Parsing ***
 
 USAGE = """ A simple script to test custom processors
 
@@ -46,9 +40,9 @@ parser.add_argument(
 
 arguments = parser.parse_args()
 
-# Setting up the board
+# *** Setting up the board and running the workload ***
 
-cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB") # Was 32
+cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
 
 memory = ChanneledMemory(
     dram_interface_class=DDR4_2400_8x8,
