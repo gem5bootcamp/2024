@@ -203,14 +203,16 @@ Things to note:
 
 ---
 
-<!-- Remind the audience to run `touch src/bootcamp/hello-sim-object/hello_sim_object.cc` -->
-
 <!-- _class: small-code -->
 
 ## SimObject Source File: All the Code
 
 Let's create a source file for `HelloSimObject` under:
-`src/bootcamp/hello-sim-object/hello_sim_object.cc`.
+`src/bootcamp/hello-sim-object/hello_sim_object.cc` with the following command.
+
+```sh
+touch src/bootcamp/hello-sim-object/hello_sim_object.cc
+```
 
 Open `src/bootcamp/hello-sim-object/hello_sim_object.cc` in your editor of choice and add the following code to it.
 
@@ -235,22 +237,15 @@ HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
 
 ## SimObject Source File: Deeper Look
 
-<!-- For the first bullet point, consider moving the the points after the colon to be sub-bullet points
-E.g
-Instead of
-- List: item1, item2
-Do
-- List
-  - item1
-  - item2
--->
-
 <!-- In the last bullet point: I don't fully understand this line: This means params can be passed to the `SimObject::SimObject`
 It can be passed to SimObject::SimObject because it inherits from SimObjectParams? -->
 
 Things to note:
 
-- gem5's convention for the order of include statements is as follows: the *header for the* `SimObject` first, *C++ libraries in alphabetical order*, and *other gem5 header files in alphabetical order*.
+- gem5's convention for the order of include statements is as follows
+  - the *header for the* `SimObject` first
+  - *C++ libraries in alphabetical order*
+  - *other gem5 header files in alphabetical order*.
 - We only define the constructor of the `HelloSimObject` class since that's the only function it has so far.
 - The `params` object passed to the `HelloSimObject::HelloSimObject` is an object of `HelloSimObjectParams` that inherits from `SimObjectParams`. This means params can be passed to the `SimObject::SimObject`.
 
