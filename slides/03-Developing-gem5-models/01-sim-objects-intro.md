@@ -13,24 +13,16 @@ author: Mahyar Samani, M. Mysore
 
 ---
 
-## The Path Ahead
-
-<!-- fill this in after done -->
-- HelloSimObject
-- GoodByeSimObject
-
----
-
 ## We will cover
 
 - Development environment, code style, git branches
-- The most simple `SimObject`
-- Simple run script
-- How to add parameters to a `SimObject`
+- The most simple `SimObject` [DONE]
+- Simple run script [DONE]
+- How to add parameters to a `SimObject` [DONE]
 
 ---
 
-### Let's begin by building gem5
+## Let's begin by building gem5
 
 Let's build gem5 while we go through some basics. Do it by running the following command in the base gem5 directory
 
@@ -68,7 +60,7 @@ In a gem5 build, each `SimObject` based class has 4 of files relating to it.
 
 ---
 
-### HelloSimObject
+## HelloSimObject
 
 We will start building our first SimObject called `HelloSimObject` and look at one of the SimObject files.
 
@@ -76,7 +68,7 @@ We will start building our first SimObject called `HelloSimObject` and look at o
 
 ---
 
-### SimObject Definition File: Creating the Files
+## SimObject Definition File: Creating the Files
 
 Let's create a python file for our SimObject under:
 `src/bootcamp/hello-sim-object/HelloSimObject.py`.
@@ -91,7 +83,7 @@ touch src/bootcamp/hello-sim-object/HelloSimObject.py
 
 ---
 
-### SimObject Definition File: Importing and Defining
+## SimObject Definition File: Importing and Defining
 
 Open `src/bootcamp/hello-sim-object/HelloSimObject.py` in your editor of choice.
 
@@ -114,7 +106,7 @@ class HelloSimObject(SimObject):
 
 ---
 
-### SimObject Definition File: Deeper Look at What We Have Done
+## SimObject Definition File: Deeper Look at What We Have Done
 
 Let's take a deeper look at the few lines of code we have.
 
@@ -133,7 +125,7 @@ class HelloSimObject(SimObject):
 
 ---
 
-### Word from the Wise and A Little Peek into the Future
+## Word from the Wise and A Little Peek into the Future
 
 - I strongly recommend setting `type` to the name of the SimObject class in python and making sure the C++ class name is the same as the Python class. You will see throughout the gem5 codebase that this is *not* always the case. However, I strongly recommend following this rule to rid yourself of any compilation headaches.
 
@@ -141,7 +133,7 @@ class HelloSimObject(SimObject):
 
 ---
 
-### SimObject Header File: Creating the Files
+## SimObject Header File: Creating the Files
 
 Now, let's start building our SimObject in C++. First, let's create a file for our SimObject by running the following commands in the base gem5 directory.
 
@@ -157,7 +149,7 @@ touch src/bootcamp/hello-sim-object/hello_sim_object.hh
 ---
 <!-- _class: small-code -->
 
-### SimObject Header File: First Few Lines
+## SimObject Header File: First Few Lines
 
 Open `src/bootcamp/hello-sim-object/hello_sim_object.hh` in your editor of choice and add the following code to it.
 
@@ -184,7 +176,7 @@ class HelloSimObject: public SimObject
 
 ---
 
-### SimObject Header File: Deeper Look into the First Few Lines
+## SimObject Header File: Deeper Look into the First Few Lines
 
 Things to note:
 
@@ -198,7 +190,7 @@ Things to note:
 ---
 <!-- _class: small-code -->
 
-### SimObject Source File: All the Code
+## SimObject Source File: All the Code
 
 Let's create a source file for HelloSimObject under:
 `src/bootcamp/hello-sim-object/hello_sim_object.cc`.
@@ -216,7 +208,7 @@ namespace gem5
 HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
     SimObject(params)
 {
-    std::cout << "Hello from the HelloSimObject's constructor!" << std::endl;
+    std::cout << "Hello from HelloSimObject's constructor!" << std::endl;
 }
 
 } // namespace gem5
@@ -224,7 +216,7 @@ HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
 
 ---
 
-### SimObject Source File: Deeper Look
+## SimObject Source File: Deeper Look
 
 Things to note:
 
@@ -234,7 +226,7 @@ Things to note:
 
 ---
 
-### Let's Start Building: SConscript
+## Let's Start Building: SConscript
 
 We need to register our SimObject with gem5 for it to be built into the gem5 executable. At build time, `scons` (gem5's build system) will look through the gem5 directory searching for files `SConscript.py`. SConscript files include instructions on what needs to be built. We will simply create a file called SConscript.py (inside our SimObject directory) by running the following command in the base gem5 directory.
 
@@ -254,7 +246,7 @@ Source("hello_sim_object.cc")
 
 ---
 
-### Let's Start Building: Deeper Look at the SConscript
+## Let's Start Building: Deeper Look at the SConscript
 
 Things to note:
 
@@ -263,7 +255,7 @@ Things to note:
 
 ---
 
-### Let`s Compile
+## Let`s Compile
 
 Now, the only thing left to do before we can use HelloSimObject in our configuration scripts, is to recompile gem5. Run the following command in the base gem5 directory to recompile gem5.
 
@@ -276,14 +268,14 @@ While we wait for gem5 to be built, we will focus on creating a configuration sc
 ```sh
 mkdir configs/bootcamp
 mkdir configs/bootcamp/hello-sim-object
-touch configs/bootcamp/first-hello-example.py
+touch configs/bootcamp/hello-sim-object/first-hello-example.py
 ```
 
 ---
 
-### Configuration Script: First Hello Example: m5 and Root
+## Configuration Script: First Hello Example: m5 and Root
 
-Open `configs/bootcamp/first-hello-example.py` in your editor of choice.
+Open `configs/bootcamp/hello-sim-object/first-hello-example.py` in your editor of choice.
 
 To run a simulation, we will need to interface with gem5's backend. `m5` will allow us to call on the C++ backend to instantiate SimObjects in C++ and simulate them. To import m5 into your configuration script add the following to your code.
 
@@ -299,7 +291,7 @@ from m5.objects.Root import Root
 
 ---
 
-### Configuration Script: First Hello Example: Creating Instances in Python
+## Configuration Script: First Hello Example: Creating Instances in Python
 
 We will also need to import HelloSimObject into our configuration script. To do that add the following line to your configuration script.
 
@@ -318,7 +310,7 @@ root.hello = HelloSimObject()
 
 ---
 
-### Configuration Script: First Hello Example: Instantiation in C++ and Simulation
+## Configuration Script: First Hello Example: Instantiation in C++ and Simulation
 
 Next, let's tell gem5 to instantiate our SimObjects in C++ by calling `instantiate` from m5. Add the following line to your code to do that.
 
@@ -340,7 +332,7 @@ print(f"Exited simulation because: {exit_event.getCause()}.")
 
 ---
 
-### Everything Everywhere All at Once
+## Everything Everywhere All at Once
 
 Here is the complete version of our configuration script.
 
@@ -360,14 +352,19 @@ print(f"Exited simulation because: {exit_event.getCause()}.")
 
 ---
 
-### Simulate: First Hello Example
+## Simulate: First Hello Example
 
 <!-- record with asciinema -->
 
 ---
+<!-- _class: title -->
+
+## A Little Bit of a Detour: m5.instantiate
+
+---
 <!-- _class: small-code -->
 
-### Detour: m5.instantiate: SimObject Constructors and Connecting Ports
+## Detour: m5.instantiate: SimObject Constructors and Connecting Ports
 
 Below is a snippet of code from the definition of m5.instantiate:
 
@@ -384,7 +381,7 @@ This means that well you call m5.instantiate first all the SimObjects are create
 ---
 <!-- _class: small-code -->
 
-### Detour: m5.instantiate: SimObject::init
+## Detour: m5.instantiate: SimObject::init
 
 Here is another snippet of code further in the code of instantiate
 
@@ -410,7 +407,7 @@ Below is the declaration for init in `src/sim/sim_object.hh`.
 ---
 <!-- _class: small-code -->
 
-### Detour: m5.instantiate: SimObject::initState, SimObject::loadState
+## Detour: m5.instantiate: SimObject::initState, SimObject::loadState
 
 Below shows yet another snippet from instantiate:
 
@@ -432,7 +429,7 @@ Continued in next page.
 
 ---
 
-### Detour: m5.instantiate: SimObject::initState, SimObject::loadState: C++
+## Detour: m5.instantiate: SimObject::initState, SimObject::loadState: C++
 
 Below is the declaration for initState and loadState in `src/sim/sim_object.hh`.
 
@@ -453,5 +450,126 @@ Below is the declaration for initState and loadState in `src/sim/sim_object.hh`.
 
 ---
 
+## We Will See Later
+
+You might have noticed that we also call `m5.simulate` in our configuration script. For now HelloSimObject does not have anything interesting that has to do with simulate. We will look into the details of simulate later.
 
 ---
+<!-- _class: title -->
+## Params
+
+---
+
+## Let's Talk About Params: Model vs Params
+
+<!-- _class: small-code -->
+<!-- ask Jason for good example analogy for Model vs Params (cache is a model and cache size is a param) -->
+
+As we mentioned earlier, gem5 allows us to parametrize our models. The whole set of parameter classes in gem5 are defined under `m5.params` so let's go ahead and import everything from m5.params into our SimObject definition file. Open `src/bootcamp/hello-sim-object/HelloSimObject.py` in your editor of choice and add the following line to it.
+
+```python
+from m5.params import *
+```
+
+Now we just need to define a parameter for our HelloSimObject. Add the following line to the HelloSimObject definition file to do that. You should add this line under the definition of `class HelloSimObject`.
+
+```python
+    num_hellos = Param.Int("Number of times to say Hello.")
+```
+
+Make sure to take a look at `src/python/m5/params.py` for more information on different parameter classes and how you can add a parameter.
+**CAUTION**: Params allow you to define a default value for them. I strongly recommend that you don't define defaults unless you really have to.
+
+---
+
+## HelloSimObject Definition File Now
+
+Here is what your HelloSimObject definition file should look like after the changes.
+
+```python
+from m5.objects.SimObject import SimObject
+from m5.params import *
+
+class HelloSimObject(SimObject):
+    type = "HelloSimObject"
+    cxx_header = "bootcamp/hello-sim-object/hello_sim_object.hh"
+    cxx_class = "gem5::HelloSimObject"
+
+    num_hellos = Param.Int("Number times to say Hello.")
+```
+
+**NOTE**: This change to HelloSimObject.py will now add an attribute to the HelloSimObjectParams the next time you compile gem5. This means that we can now go ahead and access this parameter in the C++ code.
+
+---
+
+<!-- _class: small-code -->
+
+## Using num_hellos
+
+Now, we're going to use num_hellos to print `Hello from ...` multiple times in the constructor of the HelloSimObject. Open `src/bootcamp/hello-sim-object/hello_sim_object.cc` in your editor of choice.
+
+Change HelloSimObject::HelloSimObject like below:
+
+```cpp
+HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
+    SimObject(params)
+{
+    for (int i = 0; i < params.num_hellos; i++) {
+        std::cout << "i: " << i << ", Hello from HelloSimObject's constructor!" << std::endl;
+    }
+}
+```
+
+***RECOMPILE***: All we need to do now is just recompile gem5. Simply do that by running the following command in the base gem5 directory.
+
+```sh
+scons build/NULL/gem5.opt -j$(nproc)
+```
+
+---
+
+## params/HelloSimObject.hh
+
+As we mentioned before, the parameters of a SimObject are defined in an auto-generated header file with the SimObject's name name.
+
+Now that we have added a parameter to HelloSimObject, it should now be defined under HelloSimObjectParams in `build/NULL/params/HelloSimObject.hh`.
+
+If you look at the header file you should see something like below.
+
+```cpp
+// Mysore put definition of HelloSimObjectParams here
+```
+
+---
+<!-- _class: small-code -->
+
+## Configuration Script: Second Hello Example
+
+Let's create a copy of `first-hello-example.py` in `second-hello-example.py`. Just the run the following command in the base gem5 directory to do this.
+
+```sh
+cp configs/bootcamp/hello-sim-object/first-hello-example.py configs/bootcamp/hello-sim-object/second-hello-example.py
+```
+
+Now, open `second-hello-example.py` in your editor of choice and change the code to pass a value for `num_hellos` when you instantiate a HelloSimObject. Below is an example of a finished code.
+
+```python
+import m5
+from m5.objects.Root import Root
+from m5.objects.HelloSimObject import HelloSimObject
+
+root = Root(full_system=False)
+root.hello = HelloSimObject(num_hellos=5)
+
+m5.instantiate()
+exit_event = m5.simulate()
+
+print(f"Exited simulation because: {exit_event.getCause()}.")
+```
+
+---
+
+## Simulate: Second Hello Example
+
+<!-- record with asciinema -->
+
