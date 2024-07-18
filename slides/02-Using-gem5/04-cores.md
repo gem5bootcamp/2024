@@ -175,7 +175,7 @@ We will do this soon.
 
 ### Start by opening the following file.
 
-[materials/developing-gem5-models/04-cores/cores.py](../../materials/developing-gem5-models/04-cores/cores.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores.py)
 
 ### Steps
 
@@ -190,7 +190,7 @@ We will be running a program (workload) called **matrix-multiply** on our board.
 
 ## Let's configure a simple system with Atomic CPU
 
-[materials/developing-gem5-models/04-cores/cores.py](../../materials/developing-gem5-models/04-cores/cores.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores.py)
 
 ```python
 from gem5.resources.resource import obtain_resource
@@ -396,9 +396,9 @@ In general, if you don't specify the out-directory, it will be **m5out/stats.txt
 
 ## Material to use
 
-[materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores-complex.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores-complex.py)
 
-[materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/components/processors.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/components/processors.py)
 
 ### Steps
 
@@ -433,7 +433,7 @@ To do this, we will change **4** parameters in each processor.
 ## Configuring Big
 
 Open the following file.
-[materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/components/processors.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/components/processors.py)
 
 In class big, set
 
@@ -462,7 +462,7 @@ class Big(O3CPU):
 ## Configuring Little
 
 Keep working in the following file.
-[materials/developing-gem5-models/04-cores/components/processors.py](../../materials/developing-gem5-models/04-cores/components/processors.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/components/processors.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/components/processors.py)
 
 In class Little, set
 
@@ -489,7 +489,7 @@ class Little(O3CPU):
 ## Run with big processor
 
 Open the following file.
-[materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores-complex.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores-complex.py)
 
 First, we will run matrix-multiply with our big processor.
 
@@ -506,7 +506,7 @@ Make sure the out directory is set to **big-proc**.
 ## Run with Little processor
 
 Keep the following file open.
-[materials/developing-gem5-models/04-cores/cores-complex.py](../../materials/developing-gem5-models/04-cores/cores-complex.py)
+[materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores-complex.py](../../materials/02-Developing-gem5-model/05-modeling-cores/04-cores/cores-complex.py)
 
 Next, we will run matrix-multiply with our Little processor.
 
