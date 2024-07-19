@@ -79,7 +79,7 @@ Again, note that this is the repo where the slides are.
 ```
 
 - This takes a while (10-15 minutes with 16 cores, ~1hr on 1 core).
-- If you're using codespaces, we have prebuilt binaries for you.
+c- If you're using codespaces, we have prebuilt binaries for you.
 - We'll talk more about the build system and options later.
 
 [![asciicast](https://asciinema.org/a/6rAd24brgGqb3Sj8Kmvy1msaG.svg)](https://asciinema.org/a/6rAd24brgGqb3Sj8Kmvy1msaG)
