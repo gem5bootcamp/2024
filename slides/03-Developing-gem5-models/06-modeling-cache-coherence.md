@@ -538,7 +538,7 @@ Start fixing the errors and fill in the `MyMSI-cache.sm`
 transition(IS_D, {DataDirNoAcks, DataOwner}, S) {
     writeDataToCache;
     deallocateTBE;
-    externalStoreHit;
+    externalLoadHit;
     popResponseQueue;
 }
 ```
@@ -560,7 +560,7 @@ action(writeDataToCache, "wd", desc="Write data to the cache") {
     }
 }
 ```
-Try again:
+Try again (have to recompile after any change to the protocol):
 ```sh
 scons build/ALL_MyMSI/gem5.opt -j$(nproc) PROTOCOL=MYMSI
 build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
@@ -586,7 +586,7 @@ Try again:
 
 ```sh
 scons build/ALL_MyMSI/gem5.opt -j$(nproc) PROTOCOL=MYMSI
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
 ```
 
 ---
@@ -600,7 +600,7 @@ Run the ruby random tester. This is a special "CPU" which exercises coherence co
 - Modify the `test_caches.py` the same way as `msi_caches.py`
 
 ```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
 ```
 
 Notice you may want to change `checks_to_complete` and `num_cpus` in `test_caches.py`.
@@ -611,19 +611,44 @@ You may also want to reduce the memory latency.
 ## Using the random tester
 
 ```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
 ```
 
 - Wow! now it should be way faster to see the error!
-- Now, you need to handle this in the cache!
+- Now, you need to handle this in the cache! `transition(S, Inv, I)`
   - If you get an invalidate...
   - Send an ack, let the CPU know that this line was invalidated, deallocate the block, pop the queue
-- So, now, hmm, it looks like it works??? But here's still one more `// Fill this in`
-  - Some transitions are very rare
+- So, now, hmm, it looks like it works??? But here's still one more
+  - Some transitions are very rare: `transition(I, Store, IM_AD)`
   - Try varying the parameters of the tester (without `ProtocolTrace`!) to find a combination which triggers an error (100000 checks, 8 CPUs, 50ns memory...)
 - Now, you can fix the error!
 
 ---
+## Transitions
+
+
+```sh
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+```
+```sh
+
+transition(S, Inv, I) {
+    sendInvAcktoReq;
+    forwardEviction;
+    deallocateCacheBlock;
+    popForwardQueue;
+}
+
+transition(I, Store,IM_AD) {}
+    allocateCacheBlock;
+    allocateTBE;
+    sendGetM;
+    popMandatoryQueue;
+}
+
+```
+------
+
 
 ## Fixing the error: Deadlock
 
@@ -632,13 +657,24 @@ build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_
   - Fill that in!
 
 ```c++
-codeblock?
+transition({SM_AD, SM_A}, {Store, Replacement, FwdGetS, FwdGetM}) {
+    stall;
+
+action(loadHit, "Lh", desc="Load hit") {
+  // Set this entry as the most recently used for the replacement policy
+  // Send the data back to the sequencer/CPU. NOTE: False means it was not an "external hit", but hit in this local cache.
+  assert(is_valid(cache_entry));
+  // Set this entry as the most recently used for the replacement policy
+  cacheMemory.setMRU(cache_entry);
+  // Send the data back to the sequencer/CPU. NOTE: False means it was not an "external hit", but hit in this local cache.
+  sequencer.readCallback(address, cache_entry.DataBlk, false);
+}
 ```
 
 Try again:
 
 ```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
 ```
 
 ---
@@ -651,13 +687,17 @@ build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_
   - When sending, you need to construct a new message. See `RequestMsg` in `MyMSI-msg.sm`
 
 ```c++
-codeblock?
-```
-
-Try again:
-
-```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+ action(sendGetM, "gM", desc="Send GetM to the directory") {
+        // Fill this in with an enqueue on the request output port
+        enqueue(request_out, RequestMsg, 1) {
+            out_msg.addr := address;
+            out_msg.Type := CoherenceRequestType:GetM;
+            out_msg.Destination.add(mapAddressToMachine(address,
+                                    MachineType:Directory));
+            out_msg.MessageSize := MessageSizeType:Control;
+            out_msg.Requestor := machineID;
+        }
+  }
 ```
 
 ---
@@ -670,11 +710,16 @@ build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_
   - send an invalidate to all other sharers
   - set the owner
   - and pop the queue
-
+- Now edit `MyMSI-dir.sm`
 ```c++
-codeblock?
+transition(S, GetM, M_m) {
+    sendMemRead;
+    removeReqFromSharers;
+    sendInvToSharers;
+    setOwner;
+    popRequestQueue;
+}
 ```
-
 Try again: (note: no protocol trace this time since it is mostly working)
 
 ```sh
