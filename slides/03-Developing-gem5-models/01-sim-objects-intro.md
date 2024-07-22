@@ -18,6 +18,11 @@ Speaker Notes
 - Topics to cover
  -->
 
+<!--
+Speaker Notes
+- Topics to cover
+ -->
+
 ## We will cover
 
 - Development environment, code style, git branches
@@ -102,7 +107,7 @@ We will start with the following steps.
 1. Write a definition file.
 2. Write a header file.
 3. Write a source file.
-4. Write a SConscript.
+4. Write a `SConscript`.
 5. Compile.
 6. Write a configuration script and run it.
 
@@ -365,7 +370,7 @@ Speaker Notes
 
 ## Let's Start Building: SConscript
 
-We need to register our `SimObject` with gem5 for it to be built into the gem5 executable. At build time, `scons` (gem5's build system) will look through the gem5 directory searching for files `SConscript`. SConscript files include instructions on what needs to be built. We will simply create a file called SConscript (inside our `SimObject` directory) by running the following command in the base **gem5** directory.
+We need to register our `SimObject` with gem5 for it to be built into the gem5 executable. At build time, `scons` (gem5's build system) will look through the gem5 directory searching for files `SConscript`. `SConscript` files include instructions on what needs to be built. We will simply create a file called `SConscript` (inside our `SimObject` directory) by running the following command in the base **gem5** directory.
 
 ```sh
 touch src/bootcamp/hello-sim-object/SConscript
@@ -642,7 +647,7 @@ Below shows yet another snippet from instantiate:
             obj.initState()
 ```
 
-`initState` and `loadState` are the last step of initializing `SimObjects`. However, only one of them is called for every simulation. `loadState` is called to unserialize a `SimObject`'s state from a checkpoint and `initState` is only called when starting a new simulation (i.e. not from a checkpoint).
+`initState` and `loadState` are the last step of initializing `SimObjects`. However, only one of them is called for every simulation. `loadState` is called to unserialize a `SimObject's` state from a checkpoint and `initState` is only called when starting a new simulation (i.e. not from a checkpoint).
 
 Continued in next page.
 
