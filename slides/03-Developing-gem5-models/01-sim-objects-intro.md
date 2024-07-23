@@ -26,9 +26,9 @@ Speaker Notes
 ## We will cover
 
 - Development environment, code style, git branches
-- The most simple `SimObject` [DONE]
-- Simple run script [DONE]
-- How to add parameters to a `SimObject` [DONE]
+- The most simple `SimObject`
+- Simple run script
+- How to add parameters to a `SimObject`
 
 ---
 
@@ -76,7 +76,7 @@ Speaker Notes
 
 ## SimObject in Code
 
-In a gem5 build, each `SimObject` based class has 4 of files relating to it.
+In a gem5 build, each `SimObject` based class has 4 files relating to it.
 
 - `SimObject` definition file: Python(ish) script (.py extension):
   - Represents the model at the highest level. Allows instantiation of the model and interfacing with the C++ backend. It defines the sets of parameters for the model.
@@ -354,8 +354,8 @@ It can be passed to SimObject::SimObject because it inherits from SimObjectParam
 Things to note:
 
 - gem5's convention for the order of include statements is as follows.
-  - the header for the `SimObject` first
-  - C++ libraries in alphabetical order
+  - the header for the `SimObject`.
+  - C++ libraries in alphabetical order.
   - other gem5 header files in alphabetical order.
 - We only define the constructor of the `HelloSimObject` class since that's the only function it has so far.
 - The `params` object passed to the `HelloSimObject::HelloSimObject` is an object of `HelloSimObjectParams` that inherits from `SimObjectParams`. This means `params` can be passed to the `SimObject::SimObject`.
@@ -713,7 +713,7 @@ Speaker Notes
 
 <!-- ask Jason for good example analogy for Model vs Params (cache is a model and cache size is a param) -->
 
-As we mentioned earlier, gem5 allows us to parametrize our models. The whole set of parameter classes in gem5 is defined under `m5.params`, so let's go ahead and import everything from `m5.params` into our SimObject definition file. Open [src/bootcamp/hello-sim-object/HelloSimObject.py](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) in your editor of choice and add the following line to it.
+As we mentioned earlier, gem5 allows us to parametrize our models. The whole set of parameter classes in gem5 is defined under `m5.params`, so let's go ahead and import everything from `m5.params` into our `SimObject` definition file. Open [src/bootcamp/hello-sim-object/HelloSimObject.py](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) in your editor of choice and add the following line to it.
 
 ```python
 from m5.params import *
@@ -883,3 +883,27 @@ Run with the following command in the base **gem5** directory.
 ```
 
 [![asciicast](https://asciinema.org/a/P1nULfk7VRZGvQURZJryl7mAK.svg)](https://asciinema.org/a/P1nULfk7VRZGvQURZJryl7mAK)
+
+---
+
+<!-- _class: two-col -->
+
+## Summary of Steps
+
+- Creating a basic `SimObject`
+    - [`SimObject` definition file](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) (.py)
+        - Defines the sets of parameters for the model.
+    - [`SimObject` header file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.hh) (.hh)
+        - Declares the `SimObject` class in C++.
+    - [`SimObject` source file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc) (.cc extension):
+        - Implements the `SimObject` functionalities.
+    - [`SConscript`](../../gem5/src/bootcamp/hello-sim-object/SConscript)
+        -  Register our `SimObject` with gem5.
+    - Auto-generated [`SimObjectParams` header file](../../gem5/build/NULL/params/HelloSimObject.hh) (.hh)
+        - Declares a C++ struct storing all the parameters of the `SimObject`.
+    - [Configuration file](../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py) (.py)
+        - Instantiate `SimObject` and run the simulation.
+- Adding a parameter (`num_hellos`)
+    - Update the [definition file](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) and the [source file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc).
+    - Write a new [configuration file](../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py).
+    - Re-compile and re-run.
