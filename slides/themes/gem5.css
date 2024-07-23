@@ -181,6 +181,12 @@ section.center-image img {
 }
 
 /****************************************************/
+/* For adding a border to images */
+section.border-image img {
+    border: 1px solid var(--gem5-dark);
+}
+
+/****************************************************/
 /* For title cards at the beginning of a section, e.g. Intro to ..., etc.
    Has a blue gradient. From Erin and Mysore
 */
