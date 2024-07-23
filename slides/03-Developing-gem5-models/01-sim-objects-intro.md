@@ -78,8 +78,9 @@ Speaker Notes
 
 In a gem5 build, each `SimObject` based class has 4 related files.
 
-- `SimObject` definition file: Python(ish) script (.py extension):
+- `SimObject` declaration file: Python(ish) script (.py extension):
   - Represents the model at the highest level. Allows instantiation of the model and interfacing with the C++ backend. It defines the sets of parameters for the model.
+  - **CAUTION**: You should not change parameter values (which we will learn about in the future) in this file if what you want to do is to reconfigure your `SimObject`.
 - `SimObject` header file: C++ header file (.hh extension):
   - Declares the `SimObject` class in C++.
   Strongly tied to `SimObject` definition file.
@@ -104,6 +105,7 @@ Speaker Notes
 We will start building our first `SimObject` called `HelloSimObject`, and we will look at one of the `SimObject` files.
 
 We will start with the following steps.
+
 1. Write a definition file.
 2. Write a header file.
 3. Write a source file.
@@ -112,6 +114,7 @@ We will start with the following steps.
 6. Write a configuration script and run it.
 
 ###
+
 Later, we'll do the following steps.
 
 7. Add a parameter to the definition file.
@@ -418,7 +421,7 @@ Speaker Notes
 - Creating directories and configuration script file path
  -->
 
-## Let`s Compile
+## Let's Compile
 
 Now, the only thing left to do before we can use `HelloSimObject` in our configuration script is to recompile gem5. Run the following command in the base **gem5** directory to recompile gem5.
 
@@ -565,7 +568,7 @@ Run with the following command in the base **gem5** directory.
 
 ---
 
-<!-- _class: title -->
+<!-- _class: start -->
 
 ## A Little Bit of a Detour: m5.instantiate
 
@@ -700,8 +703,8 @@ Speaker Notes
 You might have noticed that we also call `m5.simulate` in our configuration script. For now, `HelloSimObject` does nothing interesting during simulation. We will look into the details of simulate later.
 
 ---
+<!-- _class: start -->
 
-<!-- _class: title -->
 ## Params
 
 ---
