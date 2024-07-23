@@ -25,15 +25,15 @@ class InspectorGadget(ClockedObject)
     mem_side_port = ResponsePort()
     cpu_side_port = RequestPort()
 
-    inspection_buffer_entries = Param.Int(...)
+    inspection_buffer_entries = Param.Int("Number of entries in the input buffer for inspection.")
 
-    num_inspecting_units = Param.Int(...)
+    num_inspecting_units = Param.Int("Maximum number of inspections done in parallel.")
 
-    inspection_starts_per_cycle = Param.Int(...)
+    start_per_cycle = Param.Int("Maximum number of inspections that can be started at the  same cycle.")
 
-    inspection_total_latency = Param.Cycle(...)
-    pipeline_inspection = Param.Bool(...)
-    inspection_frontend_latency = Param.Cycle(...)
+    inspection_latency = Param.Cycle("Number of  cycles to inspect one packet.")
+    pipeline_inspection = Param.Bool("Whether the inspection units are pipelined or not.")
+    critical_inspection_latency = Param.Cycle("The number of cycles between two inspections for the same inspection unit. This parameter is ignored if `pipeline_inspection` is set to `False`.")
 
     cxx_exports = [PyBindMethod("printInspectionBuffer")]
 ```
