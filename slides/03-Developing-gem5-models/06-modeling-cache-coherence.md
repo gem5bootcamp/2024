@@ -644,6 +644,9 @@ transition(I, Store,IM_AD) {}
 }
 
 ```
+Runs scons and python script
+
+
 ------
 
 
@@ -669,7 +672,7 @@ action(loadHit, "Lh", desc="Load hit") {
 }
 ```
 
-Try again:
+Try again (scons and python script)
 
 ```sh
 build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
@@ -697,6 +700,7 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
     }
   }
 ```
+Run scons and python script
 
 ---
 
@@ -718,7 +722,7 @@ transition(S, GetM, M_m) {
     popRequestQueue;
 }
 ```
-Try again: (note: no protocol trace this time since it is mostly working)
+Try again (scons and python script): (note: no protocol trace this time since it is mostly working)
 
 ```sh
 build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/ruby_test.py
@@ -740,10 +744,11 @@ build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
 - How many times times did a cache have to upgrade from S -> M?
 `grep -i system.caches.L1Cache_Controller.SM_AD.DataDirNoAcks::total m5out/stats.txt`          565
 - What was the average miss latency for the L1?
-`grep -i system.caches.MachineType.L1Cache.miss_mach_latency_hist_seqr::[mean OR gmean]  m5out/stats.txt` 19.448276
+`grep -i system.caches.MachineType.L1Cache.miss_mach_latency_hist_seqr::mean  m5out/stats.txt` 19.448276
 - What was the average miss latency *when another cache had the data*?
-`grep -i system.caches.RequestTypeMachineType.ST.L1Cache.miss_type_mach_latency_hist_seqr::mean m5out/stats.txt`(18) +
-`grep -i system.caches.RequestTypeMachineType.LD.L1Cache.miss_type_mach_latency_hist_seqr::mean` (19.7) = 27.5
+`grep -i system.caches.RequestTypeMachineType.ST.L1Cache.miss_type_mach_latency_hist_seqr::mean m5out/stats.txt`(18)
+`grep -i system.caches.RequestTypeMachineType.LD.L1Cache.miss_type_mach_latency_hist_seqr::mean`
+-multiply by sample size (...::sample) and then add together
 
 
 ---
