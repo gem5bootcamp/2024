@@ -628,22 +628,19 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
 
 
 ```sh
-build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
-```
-```sh
 
 transition(S, Inv, I) {
-    sendInvAcktoReq;
-    forwardEviction;
-    deallocateCacheBlock;
-    popForwardQueue;
+  sendInvAcktoReq;
+  forwardEviction;
+  deallocateCacheBlock;
+  popForwardQueue;
 }
 
 transition(I, Store,IM_AD) {}
-    allocateCacheBlock;
-    allocateTBE;
-    sendGetM;
-    popMandatoryQueue;
+  allocateCacheBlock;
+  allocateTBE;
+  sendGetM;
+  popMandatoryQueue;
 }
 
 ```
@@ -659,6 +656,7 @@ transition(I, Store,IM_AD) {}
 ```c++
 transition({SM_AD, SM_A}, {Store, Replacement, FwdGetS, FwdGetM}) {
     stall;
+}
 
 action(loadHit, "Lh", desc="Load hit") {
   // Set this entry as the most recently used for the replacement policy
@@ -689,14 +687,14 @@ build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3
 ```c++
  action(sendGetM, "gM", desc="Send GetM to the directory") {
         // Fill this in with an enqueue on the request output port
-        enqueue(request_out, RequestMsg, 1) {
-            out_msg.addr := address;
-            out_msg.Type := CoherenceRequestType:GetM;
-            out_msg.Destination.add(mapAddressToMachine(address,
+    enqueue(request_out, RequestMsg, 1) {
+      out_msg.addr := address;
+      out_msg.Type := CoherenceRequestType:GetM;
+      out_msg.Destination.add(mapAddressToMachine(address,
                                     MachineType:Directory));
-            out_msg.MessageSize := MessageSizeType:Control;
-            out_msg.Requestor := machineID;
-        }
+      out_msg.MessageSize := MessageSizeType:Control;
+      out_msg.Requestor := machineID;
+    }
   }
 ```
 
@@ -723,7 +721,7 @@ transition(S, GetM, M_m) {
 Try again: (note: no protocol trace this time since it is mostly working)
 
 ```sh
-build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/ruby_test.py
 ```
 
 ---
@@ -733,15 +731,20 @@ build/ALL/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_
 Re-run the simple pthread test and lets look at some stats!
 
 ```sh
-build/ALL/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
 ```
-
 - How many forwarded messages did the L1 caches receive?
-- How many times times did a cache have to upgrade from S -> M?
-- What was the average miss latency for the L1?
-- What was the average miss latency *when another cache had the data*?
+`grep -i fwd m5out/stats.txt`
 
-FILL IN ANSWERS!
+  - (`...FwdGetM` + `...FwdGetS`) =  (16+13) = 29
+- How many times times did a cache have to upgrade from S -> M?
+`grep -i system.caches.L1Cache_Controller.SM_AD.DataDirNoAcks::total m5out/stats.txt`          565
+- What was the average miss latency for the L1?
+`grep -i system.caches.MachineType.L1Cache.miss_mach_latency_hist_seqr::[mean OR gmean]  m5out/stats.txt` 19.448276
+- What was the average miss latency *when another cache had the data*?
+`grep -i system.caches.RequestTypeMachineType.ST.L1Cache.miss_type_mach_latency_hist_seqr::mean m5out/stats.txt`(18) +
+`grep -i system.caches.RequestTypeMachineType.LD.L1Cache.miss_type_mach_latency_hist_seqr::mean` (19.7) = 27.5
+
 
 ---
 
