@@ -47,7 +47,7 @@ You should see an output like below.
 ```
 
 ---
-<!-- _class: small-code -->
+<!-- _class: too-much-code -->
 
 ## DebugFlags: HelloExampleFlag
 
@@ -62,7 +62,7 @@ DebugFlag("HelloExampleFlag")
 Adding this line will create a new **auto-generated** header file (with the same name as the `DebugFlag`) that defines the `DebugFlag` in C++.
 
 ---
-<!-- _class: small-code -->
+<!-- _class: too-much-code -->
 ## DebugFlags: Using HelloExampleFlag in Code
 
 One of the functions in gem5 that allows for debug printing is `DPRINTF` will let you print a formatted string if a certain `DebugFlag` is enabled (more on how to enable `DebugFlags` later). `DPRINTF` is defined in `src/base/trace.hh`. Make sure to include it every time you want to use `DPRINTF`.
@@ -83,7 +83,7 @@ Now let's add a simple `DPRINTF` statement inside the constructor of `HelloSimOb
 ```
 
 ---
-<!-- _class: small-code -->
+<!-- _class: too-much-code -->
 
 ## DebugFlags: How Files Look Like
 
@@ -153,7 +153,7 @@ Below shows an expected output of running the following command.
 ```
 
 ---
-<!-- _class: small-code -->
+<!-- _class: too-much-code -->
 
 ## Enabling DebugFlags: Using Configuration Script
 
@@ -202,7 +202,7 @@ Alternatively you can pass `--debug-flags=[comma-separated list of DebugFlags]` 
 <!-- record with asciinema -->
 
 ---
-<!-- _class: small-code -->
+<!-- _class: too-much-code -->
 
 ## Assertions in gem5
 
