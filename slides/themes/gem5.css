@@ -296,8 +296,12 @@ pre {
 
 code {
     font-family: "Roboto Mono", monospace;
-    font-size: var(--code-font-size);
     background-color: #ffffff;
+}
+
+/* Avoids setting font-size for <code> in headers */
+:not(h1, h2, h3, h4) code {
+    font-size: var(--code-font-size);
 }
 
 /*!
