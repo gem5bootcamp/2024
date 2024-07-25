@@ -5,6 +5,7 @@ from gem5.components.processors.simple_processor import SimpleProcessor
 from gem5.components.processors.cpu_types import CPUTypes
 from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
+from gem5.isas import ISA
 
 """ The purpose of this script is to demonstratea the journey of an instruction
 through the gem5 CPU models,.
@@ -38,7 +39,7 @@ memory = SingleChannelDDR3_1600("1GiB")
 # By default, use TIMING
 # (Change `ATOMIC` to `TIMING` or `O3` to use see the journey
 # in a different CPU model).
-processor = SimpleProcessor(cpu_type=CPUTypes.TIMING, num_cores=1)
+processor = SimpleProcessor(cpu_type=CPUTypes.TIMING, num_cores=1, isa= ISA.RISCV)
 
 #Add them to the board.
 board = SimpleBoard(

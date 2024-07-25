@@ -113,7 +113,7 @@ To start we will run the script in [materials/03-Developing-gem5-models/05-model
 
 Using GDB we will add breakpoints to the `Add::Add` function and the `Add::execute` function.
 
-To startL
+To start run gem5 with gbd.
 
 ```shell
 gdb gem5
@@ -273,7 +273,7 @@ This function mostly serves as a simple wrapper to call the `Decoder::decodeInst
 
 The `decodeInst` function is the next function on the backtrace but it's _generated_.
 
-The `decideInst` function is generated code and will only be available to you if you build gemt (`scons build/ALL/gem5.opt -j$(nproc)`).
+The `decideInst` function is generated code and will only be available to you if you build gem5 (`scons build/ALL/gem5.opt -j$(nproc)`).
 A copy of these generated files has been added for your reference in [materials/03-Developing-gem5-models/05-modeling-cores/build-riscv-generated-files](../../materials/03-Developing-gem5-models/05-modeling-cores/build-riscv-generated-files/).
 
 ---
@@ -295,7 +295,7 @@ case 0xc:
 ```
 
 This decode function takes the machine instruction and returns the appropriate `StaticInst` object (`Add(machInst)`).
-It is just a giant map.
+It is just a gaint map.
 
 ---
 
@@ -376,7 +376,7 @@ This is where it gets complicated...
 The "src/arch/*/isa directory contains the ISA definition.
 This is written in bespoke language we refer to as the ISA Domain Specific Language (ISA DSL)
 
-When gem5 is built the build system parses these files using the ["src/arch/isa/isa_parser/isa_parser.py"](https://github.com/gem5/gem5/blob/v24.0/src/arch/isa/isa_parser/isa_parser.py) script which generates  the necessary CPP code.
+When gem5 is built the build system parses these files using the ["src/arch/isa/isa_parser/isa_parser.py"](https://github.com/gem5/gem5/blob/v24.0/src/arch/isa_parser/isa_parser.py) script which generates  the necessary CPP code.
 These generated files can be found in "build/ALL/arch/*/generated/".
 The gem5 build system then compiles thes generated files into the gem5 binary.
 
@@ -620,7 +620,7 @@ StaticInstPtr RiscvISA::Decoder::decodeInst(RiscvISA::ExtMachInst machInst) {
         offset = sext<12>(IMM12);;
 ```
 
-If you go to the declaration of `Load` in "src/arch/riscv/isa/formats/mem.isa" you can figure out how this was constructed:
+If you go to the declaration of `Load` in "[src/arch/riscv/isa/formats/mem.isa](https://github.com/gem5/gem5/blob/v24.0/src/arch/riscv/isa/formats/mem.isa)" you can figure out how this was constructed:
 
 ```txt
 def format Load(memacc_code, ea_code = {{EA = rvZext(Rs1 + offset);}},
@@ -636,7 +636,7 @@ You can follow this through to see how this constructor is generated but it's a 
 
 ---
 
-From "decoder-ns.hh.inc", youi can see the generated class definition for the `Lw` instruction:
+From "decoder-ns.hh.inc", you can see the generated class definition for the `Lw` instruction:
 
 ```cpp
     class Lw : public Load
@@ -711,7 +711,7 @@ This config will let you know if you have implemented the instruction correctly.
 
 ### Use the format to specify the decoder
 
-Let's work backwards and specify each bitfied in the instruction format.
+Let's work backwards and specify each bit field in the instruction format.
 
 ```txt
 | 31 -- 25 | 24 -- 20 | 19 -- 15 | 14 -- 12 | 11 -- 7 |  6 -- 0  |
