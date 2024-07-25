@@ -283,10 +283,38 @@ You should use `panic`, and `panic_if` to catch developer mistakes. We will see 
 
 ### Other Debugging Facilities in gem5
 
+- Most debug flags requires that there is a `name()` function in in the current scope (called from a `SimObject` member function).
+- Only use the debug flags if you are using `gem5.opt` or `gem5.debug`
+
 ```cpp
-// Saili write up here.
-// Look at other DPRINT/DDUMP functions.
-// http://learning.gem5.org/book/part2/debugging.html
-// src/base/trace.hh
-// https://www.gem5.org/documentation/learning_gem5/part2/debugging/
+DPRINTF(Flag, __VA_ARGS__)
 ```
+- Takes a flag, and a format string +  format parameters.
+- Prints the formatted string only when the `Flag` is enabled.
+
+```cpp
+DPRINTFS(Flag, SimObject, __VA_ARGS__)
+```
+- Useful for debugging from private subclass of a SimObject that has a pointer to its owner
+
+```cpp
+DPRINTFR(Flag, __VA_ARGS__)
+```
+- Outputs debug statements without printing a name
+- Useful for using debug statements in object that are not SimObjects that do not have a name() function.
+
+```cpp
+DPRINTFN(__VA_ARGS__)
+DPRINTFNR(__VA_ARGS__)
+```cpp
+-  do not take a flag as a parameter. Therefore, these statements will always print whenever debugging is enabled.
+
+
+```cpp
+DDUMP(Flag, data, count)
+```
+- Prints binary `data` of length `count` bytes.
+- Formatted in user-readable hex
+
+Learn more at: https://www.gem5.org/documentation/learning_gem5/part2/debugging/
+
