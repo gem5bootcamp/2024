@@ -293,22 +293,25 @@ DPRINTF(Flag, __VA_ARGS__)
 - Prints the formatted string only when the `Flag` is enabled.
 
 ```cpp
-DPRINTFS(Flag, SimObject, __VA_ARGS__)
-```
-- Useful for debugging from private subclass of a SimObject that has a pointer to its owner
-
-```cpp
 DPRINTFR(Flag, __VA_ARGS__)
 ```
 - Outputs debug statements without printing a name
 - Useful for using debug statements in object that are not SimObjects that do not have a name() function.
 
+-----
+### Other Debugging Facilities in gem5
+
+
+```cpp
+DPRINTFS(Flag, SimObject, __VA_ARGS__)
+```
+- Useful for debugging from private subclass of a SimObject that has a pointer to its owner
+
 ```cpp
 DPRINTFN(__VA_ARGS__)
 DPRINTFNR(__VA_ARGS__)
-```cpp
--  do not take a flag as a parameter. Therefore, these statements will always print whenever debugging is enabled.
-
+```
+- These don't take a flag as a parameter, will always print whenever debugging is enabled.
 
 ```cpp
 DDUMP(Flag, data, count)
