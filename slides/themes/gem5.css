@@ -28,7 +28,7 @@ section {
     line-height: 2rem;
     padding: 70px;
     background-color: var(--gem5-background);
-    background-image: url("../themes/gem5Long.png");
+    background-image: url("../themes/gem5ColorLong.svg");
     background-repeat: no-repeat;
     background-position-x: center;
     background-size: 220px;
@@ -148,10 +148,10 @@ section.title h2 {
 
 /* gem5 logo on the right */
 section.title {
-    background-image: url("../../slides/themes/gem5ColorVert.png");
+    background-image: url("../../slides/themes/gem5ColorVert.svg");
     background-repeat: no-repeat;
-    background-position: right;
-    background-size: contain;
+    background-position: 86% 50%;
+    background-size: 440px;
 }
 
 /* title on the left */
