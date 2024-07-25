@@ -1,5 +1,7 @@
 name: build-slides
 on: [push]
+permissions:
+  contents: write
 jobs:
     marp-build-and-deploy:
         runs-on: ubuntu-latest
@@ -33,4 +35,7 @@ jobs:
         - name: Deploy 🚀
           uses: JamesIves/github-pages-deploy-action@v4
           with:
+            branch: gh-pages
             folder: build # The folder the action should deploy.
+
+
