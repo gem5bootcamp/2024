@@ -96,7 +96,7 @@ Individual subdirectories in 'tests/pyunit" can be specified and run separately 
 
 Compiler tests are run weekly on the gem5 codebase.
 
-These tests are specified directly in a GitHub Action workflow: [.github/workflows/compilers-tests.yaml](https://github.com/gem5/gem5/blob/v24.0/.github/workflows/compilers-tests.yaml)
+These tests are specified directly in a GitHub Action workflow: [.github/workflows/compilers-tests.yaml](https://github.com/gem5/gem5/blob/v24.0/.github/workflows/compiler-tests.yaml)
 
 These tests use a series of Docker images to test compilation of various gem5 conifgurations with different compilers.
 
