@@ -23,3 +23,5 @@ x86-ubuntu-gpu-ml-isca.gz
 # Ignore slides
 *.pdf
 *.html
+
+build/
