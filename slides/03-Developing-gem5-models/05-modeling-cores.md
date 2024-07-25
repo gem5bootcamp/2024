@@ -295,7 +295,7 @@ case 0xc:
 ```
 
 This decode function takes the machine instruction and returns the appropriate `StaticInst` object (`Add(machInst)`).
-It is just a gaint map.
+It is just a giant map.
 
 ---
 
