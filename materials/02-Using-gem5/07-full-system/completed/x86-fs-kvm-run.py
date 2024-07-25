@@ -15,23 +15,16 @@ from gem5.utils.requires import requires
 # MESI Two Level coherence protocol.
 requires(
     isa_required=ISA.X86,
-    coherence_protocol_required=CoherenceProtocol.MESI_TWO_LEVEL,
     kvm_required=True,
 )
 
-from gem5.components.cachehierarchies.ruby.mesi_two_level_cache_hierarchy import (
-    MESITwoLevelCacheHierarchy,
+from gem5.components.cachehierarchies.classic.private_l1_private_l2_walk_cache_hierarchy import (
+    PrivateL1PrivateL2WalkCacheHierarchy,
 )
 
 # Here we setup a MESI Two Level Cache Hierarchy.
-cache_hierarchy = MESITwoLevelCacheHierarchy(
-    l1d_size="16kB",
-    l1d_assoc=8,
-    l1i_size="16kB",
-    l1i_assoc=8,
-    l2_size="256kB",
-    l2_assoc=16,
-    num_l2_banks=1,
+cache_hierarchy = PrivateL1PrivateL2WalkCacheHierarchy(
+    l1d_size="16kB", l1i_size="16kB", l2_size="256kB"
 )
 
 # Setup the system memory.
@@ -43,6 +36,9 @@ processor = SimpleProcessor(
     isa=ISA.X86,
     num_cores=2,
 )
+
+for proc in processor.cores:
+    proc.core.usePerf = False
 
 # Here we setup the board. The X86Board allows for Full-System X86 simulations.
 board = X86Board(
@@ -61,7 +57,6 @@ def exit_event_handler():
     print("second exit event: In after boot")
     yield False
     print("third exit event: After run script")
-    yield False
     yield True
 
 simulator = Simulator(
