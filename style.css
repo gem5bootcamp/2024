@@ -1,8 +1,44 @@
+/* Google Fonts Import Link */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
 :root{
+    /* //Base Colors// */
+    --body-color: #ccdfdf;
+    --sidebar-color: #e2e4e5;
+    --primary-color: #213ba1;
+    --primary-color-light: #f1f2f6;
+    --toggle-color: #ddd;
+    --text-color: #333;
 
+    /* //transition colors// */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
 
 }
-.sidebar .image-text{
 
-
+body{
+    height: 100vh;
+    background: var(--body-color);
 }
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 200px;
+    background: var(--sidebar-color);
+}
+
+.sidebar .image-text img{
+    width: 40px;
+    border-radius: 6px;
+}
+
