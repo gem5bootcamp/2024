@@ -700,6 +700,50 @@ ADD16, Rs1, Rs2
 
 ---
 
+Lets run the [materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction](../../materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/add16_test.py)
+
+This file runs the binary [add16_test.c](../../materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/src/add16_test.c).
+
+Lets `add16_test.c` is a c program that executes the `add 16` instruction.
+
+We have not implemented this instruction in gem5. Lets run this script to see the output.
+
+---
+
+## Important parts of the `add16_test.c`
+
+Lets see what the `add16_test.c` file does.
+
+```c
+ uint64_t num1 = 0xFFFFFFFFFFFFFFFF, num2 = 0xFFFFFFFFFFFFFFFF, output = 0;
+printf("RISC-V Packed Addition using 0xFFFFFFFFFFFFFFFF and 0xFFFFFFFFFFFFFFFF \n");
+asm volatile("add16 %0, %1,%2\n":"=r"(output):"r"(num1),"r"(num2):);
+printf("Output is 0x%LX \n", output);
+if (output == 0xFFFEFFFEFFFEFFFE) {
+    printf("Test Passed! \n");
+}
+```
+The Above snippet of codes has two numbers set to `-1` and then we run the `add16` instruction.
+
+We test that the output is `-2` after the instruction is run and we print the result.
+
+---
+
+As we can see we get an unkown instruction error when we run
+
+```bash
+ gem5 ./add16_test.py
+```
+
+```bash
+src/arch/riscv/faults.cc:204: panic: Unknown instruction 0x4000010040e787f7 at pc (0x10636=>0x1063a).(0=>1)
+Memory Usage: 1285988 KBytes
+Program aborted at tick 18616032
+--- BEGIN LIBC BACKTRACE ---
+```
+
+---
+
 Try implementing the `ADD16` instruction to gem5 byself.
 The best advice when getting stuck is to find similar instructions and try figure out how they work.
 
@@ -726,8 +770,6 @@ Let's work backwards and specify each bit field in the instruction format.
 
 ---
 
-add16({{}}, IntAluOp);
-
 From this we can specify the decoder in the ISA definition:
 
 ```txt
@@ -750,6 +792,8 @@ I figured out which format to use for you butr you can find this in the ISA defi
 ---
 
 Next, let's add this to the RISC-V "decoder.isa" file.
+
+Lets add this at line 2057 at [decoder.isa](../../gem5/src/arch/riscv/isa/decoder.isa)
 
 The important thing to note is they are already other insturctions defined in this file which share the same QUADRANT and OPCODE5 values. Ergo, we just need to insert:
 
@@ -799,3 +843,27 @@ In out case, we're mkeeping this as close to CPP as possible.
 ```
 
 ---
+
+Now lets run the [materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/add16_test.py](../../materials/03-Developing-gem5-models/05-modeling-cores/02-add16-instruction/add16_test.py) script again and see the output.
+
+First lets build gem5 with our changes
+
+In the gem5 directory, execute the following
+
+```bash
+scons build/RISCV/gem5.opt -j 8
+```
+not lets run the `add16_test.py` script
+
+```bash
+../../../../gem5/build/RISCV/gem5.opt ./add16_test.py
+```
+
+As we can see the test passes
+
+```bash
+src/sim/syscall_emul.cc:74: warn: ignoring syscall mprotect(...)
+RISC-V Packed Addition using 0xFFFFFFFFFFFFFFFF and 0xFFFFFFFFFFFFFFFF
+Output is 0xFFFEFFFEFFFEFFFE
+Test Passed!
+```
