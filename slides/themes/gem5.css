@@ -16,6 +16,7 @@
     --gem5-background: #F6F8FA;
     --gem5-light: #c8eaf3;
     --gem5-dark: #00627a;
+    --gem5-gray: #77787b;
 
     --code-line-height: 2rem;
     --code-font-size: 1.4rem;
@@ -292,6 +293,7 @@ pre {
     border-radius: 5px;
     line-height: var(--code-line-height);
     background-color: #ffffff;
+    box-shadow: 1px 2px 4px var(--gem5-gray);
 }
 
 code {
@@ -302,6 +304,18 @@ code {
 /* Avoids setting font-size for <code> in headers */
 :not(h1, h2, h3, h4) code {
     font-size: var(--code-font-size);
+}
+
+:not(pre) > code {
+    font-size: calc(var(--code-font-size) * 0.9);
+    padding: 2px 6px;
+    border: 1px solid var(--gem5-gray);
+    border-radius: 5px;
+}
+
+a:has(code) {
+    /* Removes underlines from hyperlinks in code */
+    text-decoration: none;
 }
 
 /*!
