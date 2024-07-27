@@ -11,11 +11,20 @@ title: Sampled simulation with gem5
 
 ---
 
-## Recap: What if the ROI is large
+
+<!-- _class: center-image -->
+
+## What if the ROI is large
 
 ### We now know how to skip the "unimportant" part of the simulation, but what if the important part of the simulation is too too large?
 
-<!-- some artistic image here -->
+What if we are not facing this
+
+![](08-accelerating-simulation-img/skipable-experiment.drawio.svg)
+
+but actually facing this
+
+![](08-accelerating-simulation-img/roi-too-large.drawio.svg)
 
 ---
 
