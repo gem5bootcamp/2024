@@ -5,45 +5,184 @@
     <meta charset="UTF-8">
     <title>gem5 Bootcamp 2024</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/3d0d3b8c77.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-    <div class="sidebar">
+    <nav class="sidebar">
         <header>
-                <div class="image-text">
-                    <span class="image">
-                        <img src="square-icon.png" alt="gem5 logo" />
-                    </span>
+            <div class="image-text">
+                <span class="image">
+                    <img src="square-icon.png" alt="gem5 logo" />
+                </span>
+                <div class="text header-text">
+                    <span class="text">gem5</span>
+                    <span class="event">Bootcamp</span>
                 </div>
+            </div>
+            <i class="fa-solid fa-angle-right toggle"></i>
 
         </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="index.html">
+                            <i class="fa-solid fa-house icon"></i>
+                            <span class="text nav-text">Home</span>
+                        </a>
+                    </li>
+                    <div class="intro">
+                        <li class="nav-link ">
+                            <a id="0" onclick="anchor-2-iframe(0, 1)" href="slides/01-Introduction/00-introduction-to-bootcamp.html">
+                                <span class="text nav-text">Introduction</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="1" onclick="anchor-2-iframe(1, 1)" href="slides/01-Introduction/01-simulation-background.html">
+                                <span class="text nav-text">1.1 Simulation Background</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="2" onclick="anchor-2-iframe(2, 1)" href="slides/01-Introduction/02-getting-started.html">
+                                <span class="text nav-text">1.2 Getting Started</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="3" onclick="anchor-2-iframe(3, 1)"href="slides/01-Introduction/03-python-background.html">
+                                <span class="text nav-text">1.3 Python Background</span>
+                            </a>
+                        </li>
+                    </div>
+                    <div class="using-gem5">
+                        <li class="nav-link ">
+                            <a id="4" onclick="anchor-2-iframe(4, 1)" href="slides/02-Using-gem5/01-stdlib.html">
+                                <span class="text nav-text">2.1 stdlib</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="5" onclick="anchor-2-iframe(5, 1)" href="slides/02-Using-gem5/02-gem5-resources.html">
+                                <span class="text nav-text">2.2 gem5 Resources</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="6" onclick="anchor-2-iframe(6, 1) "href="slides/02-Using-gem5/03-running-in-gem5.html">
+                                <span class="text nav-text">2.3 Running in gem5</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="7" onclick="anchor-2-iframe(7, 1)" href="slides/02-Using-gem5/04-cores.html">
+                                <span class="text nav-text">2.4 Cores</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="8" onclick="anchor-2-iframe(8, 1)" href="slides/02-Using-gem5/05-cache-hierarchies.html">
+                                <span class="text nav-text">2.5 Cache Hierarchies</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="9" onclick="anchor-2-iframe(9, 1)" href="slides/02-Using-gem5/06-memory.html">
+                                <span class="text nav-text">2.6 Memory</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="10" onclick="anchor-2-iframe(10, 1)" href="slides/02-Using-gem5/07-full-system.html">
+                                <span class="text nav-text">2.7 Full System</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="11" onclick="anchor-2-iframe(11, 1)" href="slides/02-Using-gem5/08-accelerating-simulation.html">
+                                <span class="text nav-text">2.8 Accelerating Simulation</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="12" onclick="anchor-2-iframe(12, 1)" href="slides/02-Using-gem5/09-sampling.html">
+                                <span class="text nav-text">2.9 Sampling</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="13" onclick="anchor-2-iframe(13, 1)" href="slides/02-Using-gem5/10-modeling-power.html">
+                                <span class="text nav-text">2.10 Modeling Power</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="14" onclick="anchor-2-iframe(14, 1)" href="slides/02-Using-gem5/11-multisim.html">
+                                <span class="text nav-text">2.11 Multisim</span>
+                            </a>
+                        </li>
+                    </div>
+                    <div class="gem5-models">
+                        <li class="nav-link ">
+                            <a id="15" onclick="anchor-2-iframe(15, 1)" href="slides/03-Developing-gem5-models/01-sim-objects-intro.html">
+                                <span class="text nav-text">3.1 SimObjects Introduction</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="16" onclick="anchor-2-iframe(16, 1)" href="slides/03-Developing-gem5-models/02-debugging-gem5.html">
+                                <span class="text nav-text">3.2 Debugging gem5</span>
+                            </a>
+                        </li>
+                        <li class="nav-link ">
+                            <a id="17" onclick="anchor-2-iframe(17, 1)" href="slides/03-Developing-gem5-models/03-event-driven-sim.html">
+                                <span class="text nav-text">3.3 Event Driven Simulation</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="18" onclick="anchor-2-iframe(18, 1)" href="slides/03-Developing-gem5-models/04-ports.html">
+                                <span class="text nav-text">3.4 Ports</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="19" onclick="anchor-2-iframe(19, 1)" href="slides/03-Developing-gem5-models/05-modeling-cores.html">
+                                <span class="text nav-text">3.5 Modeling Cores</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="20" onclick="anchor-2-iframe(20, 1)" href="slides/03-Developing-gem5-models/06-modeling-cache-coherence.html">
+                                <span class="text nav-text">3.6 Modeling Cores</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="21" onclick="anchor-2-iframe(21, 1)" href="slides/03-Developing-gem5-models/07-chi-protocol.html">
+                                <span class="text nav-text">3.7 CHI Protocol</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="22" onclick="anchor-2-iframe(22, 1)" href="slides/03-Developing-gem5-models/08-ruby-network.html">
+                                <span class="text nav-text">3.8 Ruby Network</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="23" onclick="anchor-2-iframe(23, 1)" href="slides/03-Developing-gem5-models/09-extending-gem5-models.html">
+                                <span class="text nav-text">3.9 Extending gem5 Models</span>
+                            </a>
+                        </li>
+                    </div>
+                    <div class="contributing">
+                        <li class="nav-link">
+                            <a id="24" href="slides/06-Contributing/01-contributing.html">
+                                <span class="text nav-text">4.1 Contributing</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a id="25" href="slides/06-Contributing/02-testing.html">
+                                <span class="text nav-text">4.2 Testing</span>
+                            </a>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="slider">
+        <div class="slide-box">
+            <iframe id="1" style="border:0" src="slides/01-Introduction/00-introduction-to-bootcamp.html" class="slider-html" width="800" height="450"></iframe>
+        <button class="btn" onclick="prev()">Previous Slide Deck</button>
+        <button class="btn" onclick="next()">Next Slide Deck</button>
     </div>
-<p>
-Welcome to the gem5 Bootcamp!
-</p>
 
-<p>
-As the premier destination for computer architecture enthusiasts and researchers, our bootcamp offers an immersive experience into the world of architectural simulation and modeling.
-Whether you're a student eager to learn, a professional looking to sharpen your skills, or a researcher seeking to push the boundaries of technology, the gem5 Bootcamp is your gateway to mastering the gem5 simulator.
-</p>
-
-<p>
-Join us to explore the intricate workings of modern computer systems, engage with experts in the field, and collaborate with peers from around the globe.
-With hands-on sessions, in-depth tutorials, and challenging projects, you'll gain practical knowledge and experience that will propel your understanding and innovation in computer architecture.
-</p>
-
-<p>
-Dive into the dynamic world of simulation with the gem5 Bootcamp, and emerge equipped to tackle the computational challenges of tomorrow.
-</p>
-
-<p>
-We also held a [gem5 Bootcamp in 2022](https://gem5bootcamp.github.io/gem5-bootcamp-env/) which you can check out for more information.
-Videos from that bootcamp are available <a href="https://www.youtube.com/watch?v=orASbQ02pDw&list=PL_hVbFs_loVSaSDPr1RJXP5RRFWjBMqq3">on YouTube</a>.
-</p>
-
-<h1> SLIDES </h1>
-
-<p align="center"><iframe style="border:0" src="slides/01-Introduction/00-introduction-to-bootcamp.html" width="800" height="500" class="center"></iframe></p>
+    <script src="main.js"></script>
 </body>
+
 </html>

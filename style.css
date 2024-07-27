@@ -1,20 +1,20 @@
 /* Google Fonts Import Link */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 :root{
     /* //Base Colors// */
-    --body-color: #ccdfdf;
-    --sidebar-color: #e2e4e5;
-    --primary-color: #213ba1;
-    --primary-color-light: #f1f2f6;
+    --body-color: #e 7ecec;
+    --sidebar-color: #f2f4f4;
+    --primary-color: #2a96a9;
+    --primary-color-light: #F6F5FF;
     --toggle-color: #ddd;
-    --text-color: #333;
+    --text-color: #262626;
 
     /* //transition colors// */
     --tran-03: all 0.2s ease;
@@ -28,17 +28,129 @@ body{
     height: 100vh;
     background: var(--body-color);
 }
+
+.sidebar .text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+
+}
+
+.sidebar .image{
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+
+}
+
+/* Sidebar Styles */
 .sidebar{
     position: fixed;
     left: 0;
     top: 0;
     height: 100%;
-    width: 200px;
+    width: 250px;
+    padding: 10px 14px;
     background: var(--sidebar-color);
+    overflow-y: scroll;
+}
+.sidebar li{
+    height: 50px;
+    margin-top: 10px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar li .icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    font-size: 20px;
+}
+.sidebar li .icon,
+.sidebar li .text{
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+.sidebar header{
+    position: relative;
 }
 
 .sidebar .image-text img{
     width: 40px;
-    border-radius: 6px;
+}
+
+.sidebar header .image-text{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header .image-text .header-text{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.header-text .name{
+    font-weight: 800;
+}
+.header-text .event{
+    margin-top: -2px;
+
+}
+
+.sidebar header .toggle{
+    position: absolute;
+    top: 50%;
+    right: -25px;
+    transform: translateY(-50%);
+    height: 25px;
+    width: 25px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--sidebar-color);
+    font-size: 22px;
+}
+
+.sidebar li a{
+    height: 50%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.sidebar li i{
+    height:50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 15px;
+}
+
+/* === Slider Button Stuff === */
+.slider{
+    margin: 40px auto;
+    width: 50%;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #F6F5FF;
+    cursor: pointer;
+    margin: 5px auto;
+}
+.btn:hover{
+    background-color: #265c66;
 }
 
