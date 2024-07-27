@@ -63,7 +63,7 @@ Hello, World!
 ```
 
 On the left, it is the timestamp for the simulation.
-As the timestamp suggests, **SE simulation DOES NOT record record the time for the syscall**.
+As the timestamp suggests, **SE simulation DOES NOT record the time for the syscall**.
 
 ---
 
