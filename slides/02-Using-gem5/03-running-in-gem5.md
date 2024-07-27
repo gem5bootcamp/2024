@@ -307,7 +307,7 @@ First, let's see what the default behavior is. Go to the folder `materials/02-Us
 gem5 -re 03-run-x86-SE.py
 ```
 
-After running the simulation, you should see a directory called `m5out` in `materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE`. Open the file `simerr.txt` in `m5out`. You should see two lines that look like this:
+After running the simulation, we should see a directory called `m5out` in `materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE`. Open the file `simerr.txt` in `m5out`. We should see two lines that look like this:
 
 ```bash
 warn: No behavior was set by the user for work begin. Default behavior is resetting the stats and continuing.
@@ -393,6 +393,30 @@ Simulation Done
 it indicates that SE mode is able to read files on the host machine. Additionally, SE mode is able to write files on the host machine.
 
 However, again, SE mode is **NOT** able to time the emulated system calls.
+
+---
+
+<!-- _class: code-80-percent -->
+
+## Tips on SE mode
+
+With the gem5 stdlib, we usually use the `set_se_binary_workload` function in the `board` object to setup the workloads. We can pass in files, arguments, enviornment variables, and output file paths to the `set_se_binary_workload` function using the corresponding parameters.
+
+```python
+def set_se_binary_workload(
+    self,
+    binary: BinaryResource,
+    exit_on_work_items: bool = True,
+    stdin_file: Optional[FileResource] = None,
+    stdout_file: Optional[Path] = None,
+    stderr_file: Optional[Path] = None,
+    env_list: Optional[List[str]] = None,
+    arguments: List[str] = [],
+    checkpoint: Optional[Union[Path, CheckpointResource]] = None,
+) -> None:
+```
+
+For more information, we can look at [src/python/gem5/components/boards/se_binary_workload.p](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/se_binary_workload.py#L71).
 
 ---
 
