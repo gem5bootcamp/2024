@@ -41,7 +41,7 @@ However, if the experiment needs to model the OS interaction, or needs to model 
 
 ### 00-SE-hello-world
 
-Under 'materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world', there is a small example of an SE simulation.
+Under `materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world`, there is a small example of an SE simulation.
 [00-SE-hello-world.py](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py) will run [00-SE-hello-world](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c) binary with a simply X86 configuration.
 This binary does a print of the string `Hello, Worlds!`.
 If we use the debug flag `SyscallAll` with it, we will able to see what syscalls are simulated.
@@ -90,8 +90,8 @@ As the timestamp suggests, **SE simulation DOES NOT record the time for the sysc
 ## IMPORTANT
 
 - **_Not all of the ops do what they say automatically_**
-- Most of these just only exit the simulation (sometimes)
-- The commonly used functionalities are below. More can be found in [the m5ops documentation](https://www.gem5.org/documentation/general_docs/m5ops/):
+- Most of these just only exit the simulation
+- For example:
   - exit: Actually exits
   - workbegin: Only exits, if configured in `System`
   - workend: Only exits, if configured in `System`
@@ -99,8 +99,8 @@ As the timestamp suggests, **SE simulation DOES NOT record the time for the sysc
   - dumpstats: Dumps the stats
   - checkpoint: Only exits
   - switchcpu: Only exits
-- See [`gem5/src/sim/pseudo_inst.cc`](../../gem5/src/sim/pseudo_inst.cc) for details
-- Standard library improves on (some of) this confusion
+- See [gem5/src/sim/pseudo_inst.cc](https://github.com/gem5/gem5/blob/stable/src/sim/pseudo_inst.cc) for details
+- The gem5 standard library might have default behaviors for some of the  m5ops. See [src/python/gem5/simulate/simulator.py](https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/simulator.py#L301) for the default behaviors
 
 ---
 
@@ -132,7 +132,7 @@ In this session, we will focus on learning how to use the m5ops to annotate work
 
 ## How to use m5ops
 
-m5ops provides a library of functions for different functionalities. All functions can be found in [gem5/include/gem5/m5ops.h](../../gem5/include/gem5/m5ops.h).
+m5ops provides a library of functions for different functionalities. All functions can be found in [gem5/include/gem5/m5ops.h](https://github.com/gem5/gem5/blob/stable/include/gem5/m5ops.h).
 The commonly used functions (they are matched with the commonly used functionailites above):
 
 - `void m5_exit(uint64_t ns_delay)`
@@ -150,7 +150,7 @@ So first, we need to build the m5ops library.
 
 ## Building the m5ops library
 
-The m5 utility is in [gem5/util/m5](../../gem5/util/m5) directory.​
+The m5 utility is in [gem5/util/m5](https://github.com/gem5/gem5/tree/stable/util/m5) directory.​
 In order to build the m5ops library,
 
 1. `cd` into the ```gem5/util/m5``` directory
@@ -161,8 +161,8 @@ In order to build the m5ops library,
 
 ### Notes
 
-- If the host system ISA does not match with the target ISA, then we will need to use the cross-compiler.
-- `TARGET_ISA` has to be in lower case.
+- If the host system ISA does not match with the target ISA, then we will need to use the cross-compiler
+- `TARGET_ISA` has to be in lower case
 
 ---
 
@@ -199,13 +199,13 @@ After building the m5ops library, we can link them to our workload by:​
 
 ### 02-annotate-this
 
-### Let's annotate the workload with m5_work_begin and m5_work_end
+### Let's annotate the workload with `m5_work_begin` and `m5_work_end`
 
 In `materials/02-Using-gem5/03-running-in-gem5/02-annotate-this`, there is a workload source file [02-annotate-this.cpp](../../materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/02-annotate-this.cpp) and a [Makefile](../../materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/Makefile).
 
 The workload mainly does two things:
 
-Write a string to the standard out,
+1. Write a string to the standard out
 
 ```cpp
 write(1, "This will be output to standard out\n", 36);
@@ -217,7 +217,8 @@ write(1, "This will be output to standard out\n", 36);
 
 ## 02-annotate-this
 
-and output all the files and folders names in the current directory
+2. Output all the file and folder names in the current directory
+
 ```cpp
 struct dirent *d;
 DIR *dr;
@@ -241,7 +242,7 @@ std::cout<<std::endl;
 
 ### Our goal in this exercise
 
-Mark ```write(1, "This will be output to standard out\n", 36);``` as our region of interest so we can see the execution trace of the syscall.
+- Mark ```write(1, "This will be output to standard out\n", 36);``` as our region of interest so we can see the execution trace of the syscall.
 
 ### How do we do that?
 
@@ -310,47 +311,88 @@ After running the simulation, you should see a directory called `m5out` in `mate
 
 ```bash
 warn: No behavior was set by the user for work begin. Default behavior is resetting the stats and continuing.
-```
 
-```bash
 warn: No behavior was set by the user for work end. Default behavior is dumping the stats and continuing.
 ```
 
 ---
-<!-- _class: two-col -->
 
 ## 03-run-x86-SE
 
-Next, let's add custom workbegin and workend handlers. To do this, add the following into `03-run-x86-SE.py`:
+As mentioned before, the gem5 standard library might have default behaviors for some of the m5ops. In here, we can see that it has default behaviors for `m5_work_begin` and `m5_work_end`.
+Let's detour a bit to see how the gem5 standard library recognize the exit event and assign it a default exit event.
+All standard library defined exit events can be found in [src/python/gem5/simulate/exit_event.py](https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event.py). It uses the exit string of exit events to categories exit events. For example, both `"workbegin"` and `"m5_workend instruction encountered"` exit strings are categorized as `ExitEvent.WORKBEGIN`.
+All pre-defined exit event handler can be found in [src/python/gem5/simulate/exit_event_generators.py](https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event_generators.py).
+
+For example, the `ExitEvent.WORKBEGIN` defaults to use the `reset_stats_generator`. It means that when we are using the standard library `Simulator` object, if there is an exit with exit string `"workbegin"` or `"m5_workbegin instruction encountered"`, it will automatically execute `m5.stats.reset()` unless we over-write the default behavior using the `on_exit_event` parameter in the gem5 stdlib `Simulator` parameter.
+
+---
+<!-- _class: two-col code-70-percent -->
+
+## 03-run-x86-SE
+
+Let's add custom workbegin and workend handlers, and use the `on_exit_event` parameter in `Simulator` parameter to over-write the default behaviors. To do this, add the following into [03-run-x86-SE.py](../../materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/03-run-x86-SE.py):
 
 ```python
+# define a workbegin handler
 def workbegin_handler():
     print("Workbegin handler")
     m5.debug.flags["ExecAll"].enable()
     yield False
-```
-
-```python
+#
+# define a workend handler
 def workend_handler():
     m5.debug.flags["ExecAll"].disable()
     yield False
+#
 ```
 
 ###
 
-Also, add the following to the `Simulator(...)` function call in `03-run-x86-SE.py`:
+Also, register the handlers using the `on_exit_event` parameter in the `Simulator` object construction
 
 ```python
-  on_exit_event= {
-      ExitEvent.WORKBEGIN: workbegin_handler(),
-      ExitEvent.WORKEND: workend_handler()
-}
+# setup handler for ExitEvent.WORKBEGIN and ExitEvent.WORKEND
+    on_exit_event= {
+        ExitEvent.WORKBEGIN: workbegin_handler(),
+        ExitEvent.WORKEND: workend_handler()
+    }
+#
 ```
 
-**Notes:**
+---
 
-- Note that SE mode is able to read and write files on the host machine. This can be seen by looking at `m5out/simout.txt`, where a list of files and folders on the host is printed.
-- SE mode does not time syscalls. <!-- Is there something in the output that I can put here to show this? -->
+## 03-run-x86-SE
+
+Let's run this simulation again with the following command
+
+```bash
+gem5 -re 03-run-x86-SE.py
+```
+
+Now, we will see the following in [materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/m5out/simout.txt](../../materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/m5out/simout.txt)
+
+```bash
+3757178000: board.processor.cores.core: A0 T0 : 0x7ffff7c82572 @_end+140737350460442    :   syscall                  : IntAlu :   flags=()
+This will be output to standard out
+3757180000: board.processor.cores.core: A0 T0 : 0x7ffff7c82574 @_end+140737350460444    : cmp	rax, 0xfffffffffffff000
+```
+
+This shows the log of the debug flag `ExecAll` that we enabled for our ROI using the `m5.debug.flags["ExecAll"].enable()`, it shows all the execution trace for our ROI. As the timestamp on the left suggested again, SE mode **DOES NOT** time the emulated system calls. Also, as the log suggested, we over-wrote the default behavior of the `m5_work_begin` and `m5_work_end`.
+
+---
+
+Then, with the output
+
+```bash
+List of Files & Folders:
+., .., 03-run-SE.py, m5out,
+Simulation Done
+```
+
+it indicates that SE mode is able to read files on the host machine. Additionally, SE mode is able to write files on the host machine.
+
+However, again, SE mode is **NOT** able to time the emulated system calls.
 
 ---
 
@@ -362,7 +404,7 @@ Also, add the following to the `Simulator(...)` function call in `03-run-x86-SE.
 
 ## Cross-compiling from one ISA to another.​
 
-<!-- Insert image here -->
+<!-- _class: center-image -->
 
 ![Cross compiling width:800px center](03-running-in-gem5-imgs/slide-24.drawio.jpg)
 
