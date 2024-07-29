@@ -667,7 +667,7 @@ class RandomGenerator(AbstractGenerator):
 ### Let's run an example on how to use the traffic generator
 
 Open the following file.
-[materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py](../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py)
+[`materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py`](../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py)
 
 Steps:
 
@@ -682,7 +682,7 @@ Steps:
 
 Go to this section of the code on the right.
 
-Right now, we have set up a board with a Private L1 Shared L2 Cache Hierarchy (go [here](../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py) to see how it's constructed), and a Single Channel memory system.
+Right now, we have set up a board with a Private L1 Shared L2 Cache Hierarchy (go to [`materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py`](../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py) to see how it's constructed), and a Single Channel memory system.
 
 Add a traffic generator right below
 `memory = SingleChannelDDR3_1600()` with the following lines.
@@ -796,7 +796,8 @@ We are not going to do this right now, but if you swapped `LinearGenerator` with
 
 ## Detailed Look on Some Components
 
-- Looking at `AbstractGenerator.__init__`, you'll see that this class takes a list of `AbstractGeneratorCore` as the input. Example classes that inherit from `AbstractGenerator` are `LinearGenerator` and `RandomGenerator`.
+- You can find all generator related standard library components under [`src/python/gem5/components/processors`](https://github.com/gem5/gem5/tree/stable/src/python/gem5/components/processors).
+- Looking at [`AbstractGenerator.__init__`](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/processors/abstract_generator.py#L53), you'll see that this class takes a list of `AbstractGeneratorCore` as the input. Example classes that inherit from `AbstractGenerator` are `LinearGenerator` and `RandomGenerator`.
 - We will look at classes that extend `AbstractGeneratorCore` that will will create **synthetic traffic** by using a `SimObject` called `PyTrafficGen`, for more information you can look at `src/cpu/testers/traffic_gen`.
 - `LinearGenerator` can have multiple `LinearGeneratorCores` and `RandomGenerator` can have multiple `RandomGeneratorCores`.
 
@@ -821,13 +822,11 @@ To do this, we need `LinearGeneratorCores` (to simulate linear traffic) and `Ran
 
 `LinearGeneratorCores` simulate linear traffic.
 
-When we have multiple `LinearGeneratorCores`, we should not configure each one to have the same `min_addr` and `max_addr`.
+When we have multiple `LinearGeneratorCores`, if we configure each one to have the same `min_addr` and `max_addr`, each one will start simulating memory accesses at the same `min_addr` and go up to the same `max_addr`. They will be accessing the same addresses at the same time.
 
-If we do that, each one will start simulating memory accesses at the same `min_addr` and go up to the same `max_addr`. They will be accessing the same addresses at the same time.
+We want `LinearGeneratorCore` to simulate a more reasonable accesses pattern.
 
-We want `LinearGeneratorCore` to simulate accesses to different areas of memory.
-
-Therefore, we have to split up memory into equal-sized chunks and configure each `LinearGeneratorCore` to simulate accesses to one of these chunks.
+Therefore, we will have each `LinearGeneratorCore` simulate accesses to a different chunk of memory. To do this, we will have to split up memory into equal-sized chunks and configure each `LinearGeneratorCore` to simulate accesses to one of these chunks.
 
 ---
 <!-- _class: center-image -->
@@ -967,7 +966,7 @@ Add the following lines under the comment labeled `(1)`.
 ```python
 core_list = []
 
-num_linear_cores = biggest_power_of_two_smaller_than(num_cores)
+num_linear_cores = get_num_linear_cores(num_cores)
 num_random_cores = num_cores - num_linear_cores
 ```
 
