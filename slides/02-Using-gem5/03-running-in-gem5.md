@@ -854,11 +854,11 @@ For example, if `min_addr` = 0, `max_addr` = 9, and `num_partitions` = 3, then `
 
 ---
 
-## 06-traffic-gen: HybridGenerator: A quick reminder about RandomGenerator
+## 06-traffic-gen: HybridGenerator: A quick reminder about RandomGeneratorCores
 
-We also have to consider the `RandomGenerators`.
+We also have to consider the `RandomGeneratorCores`.
 
-It would be reasonable to assume that we should partition them like the `LinearGenerators`, but this is not the case.
+It would be reasonable to assume that we should partition them like the `LinearGeneratorCores`, but this is not the case.
 
 Even if each `RandomGeneratorCore` has the same `min_addr` and `max_addr`, since each one simulates a random memory access, each one will be simulating accesses to different (random) memory addresses.
 
