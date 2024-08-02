@@ -184,7 +184,7 @@ Here is a diagram of what `InspectorGadget` will look like eventually.
 A `ClockedObject` is a child class of `SimObject` that provides facilities for managing time in `cycles`. Every `ClockedObject` has a `clk_domain` parameter that defines its clock frequency. Using the `clk_domain`, the `ClockedObject` provides functionalities like below:
 
 - `clockEdge(Cycles n)`: A function that returns the time of the `nth` clock edge into the future.
-- `nextCycle()`: A function that return the time of first clock edge into the future, i.e. `nextCycle() := clockEdge(Cycles(1))`.
+- `nextCycle()`: A function that returns the time of first clock edge into the future, i.e. `nextCycle() := clockEdge(Cycles(1))`.
 
 This class is defined in [`gem5/src/sim/clocked_object.hh`](../../gem5/src/sim/clocked_object.hh) as shown below:
 
@@ -1004,7 +1004,7 @@ void
 InspectorGadget::processNextReqSendEvent()
 {
     panic_if(memSidePort.blocked(), "Should never try to send if blocked!");
-    panic_if(!outputBuffer.hasReady(curTick()), "Should never try to send if no ready packets!");
+    panic_if(!inspectionBuffer.hasReady(curTick()), "Should never try to send if no ready packets!");
 
     PacketPtr pkt = inspectionBuffer.front();
     memSidePort.sendPacket(pkt);
