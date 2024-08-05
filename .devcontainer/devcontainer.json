@@ -20,9 +20,10 @@
                 "ms-vscode.cpptools-themes",
                 "ms-vscode.makefile-tools",
                 "Tsinghua-Hexin-Joint-Institute.gem5-slicc",
-                "ms-python.black-formatter",
                 "marp-team.marp-vscode",
-                "hediet.vscode-drawio"
+                "hediet.vscode-drawio",
+                "ms-vsliveshare.vsliveshare",
+                "DavidAnson.vscode-markdownlint"
             ]
         }
     },
