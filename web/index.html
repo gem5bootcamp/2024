@@ -13,7 +13,7 @@
     <div id="main">
         <div class="sidebar">
             <div class="sidebar-header" onclick="route('#')">
-                <img class="sidebar-logo" src="g5_icon.svg" alt="gem5 logo"/>
+                <img class="sidebar-logo" src="icons/g5_icon.svg" alt="gem5 logo"/>
                 <div class="sidebar-title">
                     gem5 Bootcamp
                 </div>
@@ -21,10 +21,32 @@
         </div>
         <div class="content">
             <div id="home">
-                <h1>Welcome to the official gem5 bootcamp!</h1>
-                <h2>Select a slide deck from the left</h2>
-                <br/><br/>
-                <img src="bootcamp_icon.svg" width=400 alt="gem5"/>
+                <div style="display: flex;" >
+                    <div style="flex: 10;">
+                        <div style="flex: 10; text-align: center;">
+                            <h1>Welcome to the official gem5 Bootcamp website!</h1>
+                        </div>
+                        <p>This website serves to provide all the slides discussed within the 2024 bootcamp hosted from July 29th - August 2nd at the UC Davis Conference Center.</p>
+                        <p>Don't be late to any version updates and check out the official <a href="https://github.com/gem5/gem5">gem5 github</a>! You can find more information on our <a href="https://www.gem5.org/"> main website</a> and you can find the gem5 resources page <a href="https://resources.gem5.org/">here</a>. Happy programming!</p>
+                        <div style="flex: 1; text-align: center;">
+                            <h3>Contact us</h3>
+                            <a href="https://github.com/orgs/gem5/discussions">
+                                <img class="github-icon" src="icons/github.svg" alt="Github icon"/>
+                            </a>
+                            <a href="https://www.youtube.com/@gem5/">
+                                    <img class="youtube-icon" src="icons/youtube.svg" alt="Youtube icon"/>
+                            </a>
+                            <a href="https://gem5-workspace.slack.com/join/shared_invite/zt-2e2nfln38-xsIkN1aRmofRlAHOIkZaEA#/shared-invite/email">
+                                <img class="slack-icon" src="icons/slack.svg" alt="Slack icon"/>
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="icons/bootcamp_icon.svg" width=400 alt="gem5" style="float: right;">
+                    </div>
+
+                </div>
+            </div>
             </div> <!-- home -->
             <div id="slideView">
                 <iframe id="slideFrame" title="Main slides (hidden)"></iframe>
