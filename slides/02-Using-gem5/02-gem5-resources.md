@@ -214,7 +214,7 @@ Let's do an example that creates a local binary and runs that binary in gem5.
 
 ## Let's create a binary
 
-Let's use [this C program that prints a simple triangle pattern](../../materials/02-Using-gem5/02-gem5-resources/03-local-resources/pattern.c).
+Let's use [this C program that prints a simple triangle pattern](../../materials/02-Using-gem5/02-gem5-resources/pattern.c).
 
 Compile this program. This will be the binary that we will run in gem5.
 
